@@ -7,108 +7,84 @@
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0F1117;
-  --surface: #1A1D27;
-  --surface2: #222636;
-  --border: #2E3248;
-  --accent: #4F7EFF;
-  --accent2: #7C5CFC;
-  --green: #22C55E;
-  --red: #EF4444;
-  --yellow: #F59E0B;
-  --text: #E8EAF0;
-  --text-mid: #8B90A7;
-  --text-dim: #4A4F6A;
+  --bg: #F5F7FA; --surface: #FFFFFF; --surface2: #F0F2F7; --border: #E2E6EF;
+  --accent: #4F7EFF; --accent2: #7C5CFC; --green: #16A34A; --red: #DC2626;
+  --yellow: #D97706; --text: #1A1D2E; --text-mid: #5A6080; --text-dim: #9BA3BF;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-  min-height: 100vh;
-  line-height: 1.6;
-}
-.layout { display: flex; min-height: 100vh; }
-.sidebar {
-  width: 280px;
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  height: 100vh;
-  overflow-y: auto;
-}
-.sidebar-header { padding: 28px 24px 20px; border-bottom: 1px solid var(--border); }
-.logo { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
-.logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-.logo-text { font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
-.logo-sub { font-size: 11px; color: var(--text-mid); letter-spacing: 0.5px; }
-.position-list { padding: 16px 12px; flex: 1; }
-.position-label { font-size: 10px; font-weight: 600; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; padding: 0 12px; margin-bottom: 8px; }
-.position-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; cursor: pointer; transition: all .15s; margin-bottom: 2px; }
-.position-item:hover { background: var(--surface2); }
-.position-item.active { background: rgba(79,126,255,.15); }
-.position-item.active .pos-name { color: var(--accent); }
-.pos-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-dim); flex-shrink: 0; transition: all .15s; }
-.position-item.active .pos-dot { background: var(--accent); }
-.pos-name { font-size: 13px; font-weight: 500; color: var(--text-mid); line-height: 1.4; }
-.add-position-btn { margin: 8px 12px 16px; padding: 10px 12px; border: 1.5px dashed var(--border); border-radius: 10px; background: transparent; color: var(--text-dim); font-family: inherit; font-size: 13px; cursor: pointer; width: calc(100% - 24px); text-align: left; display: flex; align-items: center; gap: 8px; transition: all .15s; }
-.add-position-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(79,126,255,.05); }
-.main { margin-left: 280px; flex: 1; padding: 40px 48px; max-width: calc(100vw - 280px); }
-.main-header { margin-bottom: 32px; }
-.main-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
-.main-subtitle { font-size: 14px; color: var(--text-mid); }
-.jd-preview { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px 24px; margin-bottom: 24px; max-height: 180px; overflow-y: auto; }
-.jd-preview::-webkit-scrollbar { width: 4px; }
-.jd-preview::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-.jd-label { font-size: 10px; font-weight: 600; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
-.jd-text { font-size: 13px; color: var(--text-mid); line-height: 1.8; white-space: pre-wrap; }
-.input-section { margin-bottom: 24px; }
-.input-label { font-size: 12px; font-weight: 600; color: var(--text-mid); letter-spacing: 0.5px; margin-bottom: 10px; display: block; }
-textarea.resume-input { width: 100%; min-height: 200px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 18px 20px; color: var(--text); font-family: inherit; font-size: 14px; line-height: 1.8; resize: vertical; outline: none; transition: border-color .15s; }
-textarea.resume-input:focus { border-color: var(--accent); }
-textarea.resume-input::placeholder { color: var(--text-dim); }
-.screen-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none; border-radius: 12px; color: #fff; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all .2s; box-shadow: 0 8px 32px rgba(79,126,255,.3); }
-.screen-btn:hover { transform: translateY(-1px); }
-.screen-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-.spin { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; display: none; }
-.result-card { margin-top: 32px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: none; }
-.result-header { padding: 20px 24px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); }
-.verdict-badge { display: flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 30px; font-size: 14px; font-weight: 700; }
-.verdict-badge.pass { background: rgba(34,197,94,.15); color: var(--green); border: 1px solid rgba(34,197,94,.3); }
-.verdict-badge.fail { background: rgba(239,68,68,.15); color: var(--red); border: 1px solid rgba(239,68,68,.3); }
-.verdict-badge.review { background: rgba(245,158,11,.15); color: var(--yellow); border: 1px solid rgba(245,158,11,.3); }
-.verdict-pos { font-size: 13px; color: var(--text-mid); }
-.result-body { padding: 24px; }
-.result-section { margin-bottom: 24px; }
-.result-section:last-child { margin-bottom: 0; }
-.result-section-title { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px; }
-.summary-text { font-size: 14px; color: var(--text); line-height: 1.8; }
-.criteria-list { display: flex; flex-direction: column; gap: 10px; }
-.criteria-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: var(--surface2); border-radius: 10px; }
-.criteria-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-.criteria-text { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
-.modal-overlay.show { display: flex; }
-.modal { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 32px; width: 100%; max-width: 560px; }
-.modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
-.modal p { font-size: 13px; color: var(--text-mid); margin-bottom: 24px; line-height: 1.6; }
-.modal input, .modal textarea { width: 100%; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none; transition: border-color .15s; margin-bottom: 12px; }
-.modal input:focus, .modal textarea:focus { border-color: var(--accent); }
-.modal textarea { min-height: 200px; resize: vertical; line-height: 1.7; }
-.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
-.btn-cancel { padding: 10px 20px; border-radius: 10px; border: 1px solid var(--border); background: transparent; color: var(--text-mid); font-family: inherit; font-size: 14px; cursor: pointer; transition: all .15s; }
-.btn-cancel:hover { border-color: var(--text-mid); color: var(--text); }
-.btn-save { padding: 10px 24px; border-radius: 10px; background: var(--accent); border: none; color: #fff; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: all .15s; }
-.btn-save:hover { background: #3d6ef5; }
-.empty-state { text-align: center; padding: 80px 40px; color: var(--text-dim); }
-.empty-icon { font-size: 48px; margin-bottom: 16px; }
-.empty-text { font-size: 15px; }
-.err-box { margin-top: 20px; background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); border-radius: 12px; padding: 16px 20px; font-size: 14px; color: var(--red); }
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-.result-card.show { display: block; animation: fadeIn .3s ease; }
+body { background:var(--bg); color:var(--text); font-family:'Pretendard','Apple SD Gothic Neo',sans-serif; min-height:100vh; line-height:1.6; }
+.layout { display:flex; min-height:100vh; }
+.sidebar { width:280px; background:var(--surface); border-right:1px solid var(--border); display:flex; flex-direction:column; position:fixed; height:100vh; overflow-y:auto; }
+.sidebar-header { padding:28px 24px 20px; border-bottom:1px solid var(--border); }
+.logo { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
+.logo-icon { width:32px; height:32px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+.logo-text { font-size:15px; font-weight:700; letter-spacing:-0.3px; }
+.logo-sub { font-size:11px; color:var(--text-mid); letter-spacing:0.5px; }
+.position-list { padding:16px 12px; flex:1; }
+.position-label { font-size:10px; font-weight:600; letter-spacing:2px; color:var(--text-dim); text-transform:uppercase; padding:0 12px; margin-bottom:8px; }
+.position-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; cursor:pointer; transition:all .15s; margin-bottom:2px; }
+.position-item:hover { background:var(--surface2); }
+.position-item.active { background:rgba(79,126,255,.15); }
+.position-item.active .pos-name { color:var(--accent); }
+.pos-dot { width:6px; height:6px; border-radius:50%; background:var(--text-dim); flex-shrink:0; transition:all .15s; }
+.position-item.active .pos-dot { background:var(--accent); }
+.pos-name { font-size:13px; font-weight:500; color:var(--text-mid); line-height:1.4; }
+.add-position-btn { margin:8px 12px 16px; padding:10px 12px; border:1.5px dashed var(--border); border-radius:10px; background:transparent; color:var(--text-dim); font-family:inherit; font-size:13px; cursor:pointer; width:calc(100% - 24px); text-align:left; display:flex; align-items:center; gap:8px; transition:all .15s; }
+.add-position-btn:hover { border-color:var(--accent); color:var(--accent); background:rgba(79,126,255,.05); }
+.main { margin-left:280px; flex:1; padding:40px 48px; max-width:calc(100vw - 280px); }
+.main-header { margin-bottom:32px; }
+.main-title { font-size:24px; font-weight:700; letter-spacing:-0.5px; margin-bottom:6px; }
+.main-subtitle { font-size:14px; color:var(--text-mid); }
+.jd-preview { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 24px; margin-bottom:24px; max-height:180px; overflow-y:auto; }
+.jd-preview::-webkit-scrollbar { width:4px; }
+.jd-preview::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.jd-label { font-size:10px; font-weight:600; letter-spacing:2px; color:var(--accent); text-transform:uppercase; margin-bottom:10px; }
+.jd-text { font-size:13px; color:var(--text-mid); line-height:1.8; white-space:pre-wrap; }
+.input-section { margin-bottom:24px; }
+.input-label { font-size:12px; font-weight:600; color:var(--text-mid); letter-spacing:0.5px; margin-bottom:10px; display:block; }
+textarea.resume-input { width:100%; min-height:200px; background:var(--surface); border:1.5px solid var(--border); border-radius:14px; padding:18px 20px; color:var(--text); font-family:inherit; font-size:14px; line-height:1.8; resize:vertical; outline:none; transition:border-color .15s; }
+textarea.resume-input:focus { border-color:var(--accent); }
+textarea.resume-input::placeholder { color:var(--text-dim); }
+.screen-btn { width:100%; padding:16px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; border-radius:12px; color:#fff; font-family:inherit; font-size:15px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; transition:all .2s; box-shadow:0 8px 32px rgba(79,126,255,.3); }
+.screen-btn:hover { transform:translateY(-1px); }
+.screen-btn:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+.spin { width:18px; height:18px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:none; }
+.result-card { margin-top:32px; background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; display:none; }
+.result-header { padding:20px 24px; display:flex; align-items:center; gap:16px; border-bottom:1px solid var(--border); }
+.verdict-badge { display:flex; align-items:center; gap:8px; padding:8px 18px; border-radius:30px; font-size:14px; font-weight:700; }
+.verdict-badge.pass { background:rgba(22,163,74,.15); color:var(--green); border:1px solid rgba(22,163,74,.3); }
+.verdict-badge.fail { background:rgba(220,38,38,.15); color:var(--red); border:1px solid rgba(220,38,38,.3); }
+.verdict-badge.review { background:rgba(217,119,6,.15); color:var(--yellow); border:1px solid rgba(217,119,6,.3); }
+.verdict-pos { font-size:13px; color:var(--text-mid); }
+.result-body { padding:24px; }
+.result-section { margin-bottom:24px; }
+.result-section:last-child { margin-bottom:0; }
+.result-section-title { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:12px; }
+.summary-text { font-size:14px; color:var(--text); line-height:1.8; }
+.criteria-list { display:flex; flex-direction:column; gap:10px; }
+.criteria-item { display:flex; align-items:flex-start; gap:12px; padding:12px 16px; background:var(--surface2); border-radius:10px; }
+.criteria-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+.criteria-text { font-size:13px; color:var(--text-mid); line-height:1.6; }
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; z-index:100; padding:20px; }
+.modal-overlay.show { display:flex; }
+.modal { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:32px; width:100%; max-width:560px; }
+.modal h3 { font-size:18px; font-weight:700; margin-bottom:6px; }
+.modal p { font-size:13px; color:var(--text-mid); margin-bottom:24px; line-height:1.6; }
+.modal input,.modal textarea { width:100%; background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:12px 16px; color:var(--text); font-family:inherit; font-size:14px; outline:none; transition:border-color .15s; margin-bottom:12px; }
+.modal input:focus,.modal textarea:focus { border-color:var(--accent); }
+.modal textarea { min-height:200px; resize:vertical; line-height:1.7; }
+.modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:8px; }
+.btn-cancel { padding:10px 20px; border-radius:10px; border:1px solid var(--border); background:transparent; color:var(--text-mid); font-family:inherit; font-size:14px; cursor:pointer; transition:all .15s; }
+.btn-cancel:hover { border-color:var(--text-mid); color:var(--text); }
+.btn-save { padding:10px 24px; border-radius:10px; background:var(--accent); border:none; color:#fff; font-family:inherit; font-size:14px; font-weight:600; cursor:pointer; transition:all .15s; }
+.btn-save:hover { background:#3d6ef5; }
+.empty-state { text-align:center; padding:80px 40px; color:var(--text-dim); }
+.empty-icon { font-size:48px; margin-bottom:16px; }
+.empty-text { font-size:15px; }
+.err-box { margin-top:20px; background:rgba(220,38,38,.1); border:1px solid rgba(220,38,38,.3); border-radius:12px; padding:16px 20px; font-size:14px; color:var(--red); }
+@keyframes spin { to{transform:rotate(360deg)} }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.result-card.show { display:block; animation:fadeIn .3s ease; }
 </style>
 </head>
 <body>
@@ -116,7 +92,7 @@ textarea.resume-input::placeholder { color: var(--text-dim); }
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="logo">
-        <div class="logo-icon">🔍</div>
+        <div class="logo-icon">&#128269;</div>
         <div>
           <div class="logo-text">KONA HR LENS</div>
           <div class="logo-sub">HR 스크리닝 툴</div>
@@ -127,11 +103,11 @@ textarea.resume-input::placeholder { color: var(--text-dim); }
       <div class="position-label">포지션</div>
       <div id="positionList"></div>
     </div>
-    <button class="add-position-btn" onclick="openAddModal()">＋ 포지션 추가</button>
+    <button class="add-position-btn" onclick="openAddModal()">+ 포지션 추가</button>
   </aside>
   <main class="main" id="mainContent">
     <div class="empty-state">
-      <div class="empty-icon">👈</div>
+      <div class="empty-icon">&#128072;</div>
       <div class="empty-text">왼쪽에서 포지션을 선택해주세요</div>
     </div>
   </main>
@@ -154,9 +130,12 @@ let positions=[],selectedId=null;
 function init(){const saved=localStorage.getItem('screening_positions');if(saved){positions=JSON.parse(saved);}else{positions=DEFAULT_POSITIONS;saveToStorage();}renderSidebar();}
 function saveToStorage(){localStorage.setItem('screening_positions',JSON.stringify(positions));}
 function renderSidebar(){const list=document.getElementById('positionList');list.innerHTML=positions.map(p=>`<div class="position-item ${p.id===selectedId?'active':''}" onclick="selectPosition('${p.id}')"><div class="pos-dot"></div><div class="pos-name">${p.name}</div></div>`).join('');}
-function selectPosition(id){selectedId=id;renderSidebar();const pos=positions.find(p=>p.id===id);if(!pos)return;document.getElementById('mainContent').innerHTML=`<div class="main-header"><div class="main-title">${pos.name}</div><div class="main-subtitle">이력서 내용을 붙여넣고 스크리닝을 시작하세요</div></div><div class="jd-preview"><div class="jd-label">JD 요약</div><div class="jd-text">${pos.jd}</div></div><div class="input-section"><label class="input-label">이력서 내용 (개인정보 제외 — 경력/자격사항만)</label><textarea class="resume-input" id="resumeInput" placeholder="경력사항, 주요 업무, 스킬, 자격증 등을 붙여넣어 주세요.&#10;이름, 연락처, 주소 등 개인정보는 제외해주세요."></textarea></div><button class="screen-btn" id="screenBtn" onclick="runScreening('${id}')"><div class="spin" id="spin"></div><span id="btnTxt">🔍 스크리닝 시작</span></button><div id="resultArea"></div>`;}
-async function runScreening(posId){const pos=positions.find(p=>p.id===posId);const resume=document.getElementById('resumeInput').value.trim();if(!resume){alert('이력서 내용을 입력해주세요.');return;}const btn=document.getElementById('screenBtn'),spin=document.getElementById('spin'),btnTxt=document.getElementById('btnTxt'),resultArea=document.getElementById('resultArea');btn.disabled=true;spin.style.display='block';btnTxt.textContent='분석 중...';resultArea.innerHTML='';const prompt=`당신은 코나아이의 채용 담당자입니다. 아래 JD 기준으로 지원자의 이력서를 스크리닝해주세요.\n\n[포지션]\n${pos.name}\n\n[JD]\n${pos.jd}\n\n[지원자 이력서 (개인정보 제외)]\n${resume}\n\n아래 JSON 형식으로만 응답하세요. 다른 텍스트 없이 JSON만:\n\n{\n  "verdict": "적합" 또는 "부적합" 또는 "검토필요",\n  "summary": "2~3문장으로 종합 판정 요약",\n  "pros": ["강점 1", "강점 2", "강점 3"],\n  "cons": ["아쉬운 점 1", "아쉬운 점 2"],\n  "recommendation": "면접 진행 여부에 대한 최종 의견 1~2문장"\n}\n\n판정 기준:\n- 적합: 필수 조건을 충족하고 포지션에 잘 맞음\n- 부적합: 필수 조건 미충족 또는 포지션과 맞지 않음\n- 검토필요: 일부 조건 충족이나 추가 확인이 필요한 경우`;try{const res=await fetch('/.netlify/functions/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});const data=await res.json();const raw=data.content.map(i=>i.text||'').join('');const clean=raw.replace(/```json|```/g,'').trim();const result=JSON.parse(clean);renderResult(result,pos.name);}catch(e){resultArea.innerHTML=`<div class="err-box">⚠️ 오류가 났어요. 잠시 후 다시 시도해주세요.<br><small>${e.message}</small></div>`;}btn.disabled=false;spin.style.display='none';btnTxt.textContent='🔍 스크리닝 시작';}
-function renderResult(r,posName){const verdictClass=r.verdict==='적합'?'pass':r.verdict==='부적합'?'fail':'review';const verdictIcon=r.verdict==='적합'?'✅':r.verdict==='부적합'?'❌':'🔶';const prosHTML=(r.pros||[]).map(p=>`<div class="criteria-item"><div class="criteria-icon">✓</div><div class="criteria-text">${p}</div></div>`).join('');const consHTML=(r.cons||[]).map(c=>`<div class="criteria-item"><div class="criteria-icon">△</div><div class="criteria-text">${c}</div></div>`).join('');document.getElementById('resultArea').innerHTML=`<div class="result-card show"><div class="result-header"><div class="verdict-badge ${verdictClass}">${verdictIcon} ${r.verdict}</div><div class="verdict-pos">${posName}</div></div><div class="result-body"><div class="result-section"><div class="result-section-title">종합 요약</div><div class="summary-text">${r.summary}</div></div>${prosHTML?`<div class="result-section"><div class="result-section-title">강점</div><div class="criteria-list">${prosHTML}</div></div>`:''} ${consHTML?`<div class="result-section"><div class="result-section-title">아쉬운 점</div><div class="criteria-list">${consHTML}</div></div>`:''}<div class="result-section"><div class="result-section-title">면접 진행 의견</div><div class="summary-text">${r.recommendation}</div></div></div></div>`;}
+function selectPosition(id){selectedId=id;renderSidebar();const pos=positions.find(p=>p.id===id);if(!pos)return;document.getElementById('mainContent').innerHTML=`<div class="main-header"><div class="main-title">${pos.name}</div><div class="main-subtitle">이력서 내용을 붙여넣고 스크리닝을 시작하세요</div></div><div class="jd-preview"><div class="jd-label">JD 요약</div><div class="jd-text">${pos.jd}</div></div><div class="input-section"><label class="input-label">이력서 내용 (개인정보 제외 — 경력/자격사항만)</label><textarea class="resume-input" id="resumeInput" placeholder="경력사항, 주요 업무, 스킬, 자격증 등을 붙여넣어 주세요.&#10;이름, 연락처, 주소 등 개인정보는 제외해주세요."></textarea></div><button class="screen-btn" id="screenBtn" onclick="runScreening('${id}')"><div class="spin" id="spin"></div><span id="btnTxt">스크리닝 시작</span></button><div id="resultArea"></div>`;}
+async function runScreening(posId){const pos=positions.find(p=>p.id===posId);const resume=document.getElementById('resumeInput').value.trim();if(!resume){alert('이력서 내용을 입력해주세요.');return;}const btn=document.getElementById('screenBtn'),spin=document.getElementById('spin'),btnTxt=document.getElementById('btnTxt'),resultArea=document.getElementById('resultArea');btn.disabled=true;spin.style.display='block';btnTxt.textContent='분석 중...';resultArea.innerHTML='';
+const prompt=`당신은 코나아이의 경험 많은 채용 담당자입니다. 아래 JD와 이력서를 바탕으로 지원자를 종합적으로 평가해주세요.\n\n[포지션]\n${pos.name}\n\n[JD]\n${pos.jd}\n\n[지원자 이력서 (개인정보 제외)]\n${resume}\n\n[평가 방식]\n체크리스트식으로 조건을 하나씩 대조하지 마세요. 대신 아래 관점으로 종합적으로 판단하세요.\n- 전반적인 경력 방향성이 이 포지션과 맞는가\n- 필수 조건 중 일부가 부족하더라도, 다른 경험이나 역량이 이를 충분히 보완할 수 있는가\n- 지원자의 성장 가능성과 잠재력은 어떠한가\n- 포지션에서 실제로 잘 해낼 수 있을 가능성이 있는가\n\n[판정 기준]\n- 적합: 전반적으로 포지션에 잘 맞고, 실제 업무를 잘 수행할 가능성이 높음. 필수 조건 일부가 완벽하지 않아도 다른 강점으로 충분히 보완 가능한 경우 포함\n- 부적합: 경력 방향성이 포지션과 맞지 않거나, 핵심 역량이 현저히 부족하여 업무 수행이 어려울 것으로 판단됨\n- 검토필요: 가능성은 있으나 면접을 통해 추가로 확인이 필요한 부분이 있는 경우\n\n아래 JSON 형식으로만 응답하세요. 다른 텍스트 없이 JSON만:\n\n{\n  "verdict": "적합" 또는 "부적합" 또는 "검토필요",\n  "summary": "2~3문장으로 종합 판정 요약. 조건 나열이 아닌 전체적인 인상과 판단 근거를 서술",\n  "pros": ["강점 1", "강점 2", "강점 3"],\n  "cons": ["아쉬운 점 1", "아쉬운 점 2"],\n  "recommendation": "면접 진행 여부에 대한 최종 의견. 면접에서 확인하면 좋을 포인트도 포함"\n}`;
+try{const res=await fetch('/.netlify/functions/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});const data=await res.json();const raw=data.content.map(i=>i.text||'').join('');const clean=raw.replace(/```json|```/g,'').trim();const result=JSON.parse(clean);renderResult(result,pos.name);}catch(e){resultArea.innerHTML=`<div class="err-box">오류가 났어요. 잠시 후 다시 시도해주세요.<br><small>${e.message}</small></div>`;}
+btn.disabled=false;spin.style.display='none';btnTxt.textContent='스크리닝 시작';}
+function renderResult(r,posName){const verdictClass=r.verdict==='적합'?'pass':r.verdict==='부적합'?'fail':'review';const verdictIcon=r.verdict==='적합'?'[적합]':r.verdict==='부적합'?'[부적합]':'[검토필요]';const prosHTML=(r.pros||[]).map(p=>`<div class="criteria-item"><div class="criteria-icon">&#10003;</div><div class="criteria-text">${p}</div></div>`).join('');const consHTML=(r.cons||[]).map(c=>`<div class="criteria-item"><div class="criteria-icon">&#9651;</div><div class="criteria-text">${c}</div></div>`).join('');document.getElementById('resultArea').innerHTML=`<div class="result-card show"><div class="result-header"><div class="verdict-badge ${verdictClass}">${verdictIcon} ${r.verdict}</div><div class="verdict-pos">${posName}</div></div><div class="result-body"><div class="result-section"><div class="result-section-title">종합 요약</div><div class="summary-text">${r.summary}</div></div>${prosHTML?`<div class="result-section"><div class="result-section-title">강점</div><div class="criteria-list">${prosHTML}</div></div>`:''} ${consHTML?`<div class="result-section"><div class="result-section-title">아쉬운 점</div><div class="criteria-list">${consHTML}</div></div>`:''}<div class="result-section"><div class="result-section-title">면접 진행 의견</div><div class="summary-text">${r.recommendation}</div></div></div></div>`;}
 function openAddModal(){document.getElementById('addModal').classList.add('show');}
 function closeAddModal(){document.getElementById('addModal').classList.remove('show');document.getElementById('newPosName').value='';document.getElementById('newPosJD').value='';}
 function savePosition(){const name=document.getElementById('newPosName').value.trim();const jd=document.getElementById('newPosJD').value.trim();if(!name||!jd){alert('포지션명과 JD를 모두 입력해주세요.');return;}const id='pos-'+Date.now();positions.push({id,name,jd});saveToStorage();renderSidebar();closeAddModal();}
