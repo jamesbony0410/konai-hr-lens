@@ -4,118 +4,375 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KONA HR LENS</title>
-<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #F5F7FA; --surface: #FFFFFF; --surface2: #F0F2F7; --border: #E2E6EF;
-  --accent: #4F7EFF; --accent2: #7C5CFC; --green: #16A34A; --red: #DC2626;
-  --yellow: #D97706; --text: #1A1D2E; --text-mid: #5A6080; --text-dim: #9BA3BF;
+  --bg: #F5F7FA; --surface: #FFFFFF; --surface2: #F0F2F7; --surface3: #E8ECF5;
+  --border: #E2E6EF; --border2: #D0D6E8;
+  --accent: #4F7EFF; --accent2: #7C5CFC; --accent-light: rgba(79,126,255,.1);
+  --green: #16A34A; --green-bg: rgba(22,163,74,.1); --green-border: rgba(22,163,74,.25);
+  --red: #DC2626; --red-bg: rgba(220,38,38,.1); --red-border: rgba(220,38,38,.25);
+  --yellow: #D97706; --yellow-bg: rgba(217,119,6,.1); --yellow-border: rgba(217,119,6,.25);
+  --text: #1A1D2E; --text-mid: #5A6080; --text-dim: #9BA3BF;
+  --shadow: 0 2px 12px rgba(26,29,46,.08); --shadow-lg: 0 8px 32px rgba(26,29,46,.12);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--bg); color:var(--text); font-family:'Pretendard','Apple SD Gothic Neo',sans-serif; min-height:100vh; line-height:1.6; }
+
+/* ── LAYOUT ── */
 .layout { display:flex; min-height:100vh; }
-.sidebar { width:280px; background:var(--surface); border-right:1px solid var(--border); display:flex; flex-direction:column; position:fixed; height:100vh; overflow-y:auto; }
-.sidebar-header { padding:28px 24px 20px; border-bottom:1px solid var(--border); }
-.logo { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
-.logo-icon { width:32px; height:32px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; }
-.logo-text { font-size:15px; font-weight:700; letter-spacing:-0.3px; }
-.logo-sub { font-size:11px; color:var(--text-mid); letter-spacing:0.5px; }
-.position-list { padding:16px 12px; flex:1; }
-.position-label { font-size:10px; font-weight:600; letter-spacing:2px; color:var(--text-dim); text-transform:uppercase; padding:0 12px; margin-bottom:8px; }
-.position-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; cursor:pointer; transition:all .15s; margin-bottom:2px; }
+.sidebar { width:260px; background:var(--surface); border-right:1px solid var(--border); display:flex; flex-direction:column; position:fixed; height:100vh; overflow-y:auto; z-index:10; }
+.sidebar::-webkit-scrollbar { width:4px; }
+.sidebar::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.main { margin-left:260px; flex:1; min-height:100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar-header { padding:24px 20px 16px; border-bottom:1px solid var(--border); }
+.logo { display:flex; align-items:center; gap:10px; }
+.logo-icon { width:34px; height:34px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; }
+.logo-text { font-size:14px; font-weight:800; letter-spacing:-0.3px; }
+.logo-sub { font-size:10px; color:var(--text-dim); letter-spacing:0.8px; text-transform:uppercase; }
+
+.nav-section { padding:16px 12px 4px; }
+.nav-label { font-size:9px; font-weight:700; letter-spacing:2.5px; color:var(--text-dim); text-transform:uppercase; padding:0 8px; margin-bottom:6px; }
+.nav-item { display:flex; align-items:center; gap:9px; padding:9px 10px; border-radius:9px; cursor:pointer; transition:all .15s; margin-bottom:1px; color:var(--text-mid); font-size:13px; font-weight:500; }
+.nav-item:hover { background:var(--surface2); color:var(--text); }
+.nav-item.active { background:var(--accent-light); color:var(--accent); }
+.nav-icon { font-size:15px; width:20px; text-align:center; flex-shrink:0; }
+
+.position-list { padding:4px 12px; flex:1; }
+.position-item { display:flex; align-items:center; gap:9px; padding:9px 10px; border-radius:9px; cursor:pointer; transition:all .15s; margin-bottom:1px; }
 .position-item:hover { background:var(--surface2); }
-.position-item.active { background:rgba(79,126,255,.15); }
-.position-item.active .pos-name { color:var(--accent); }
-.pos-dot { width:6px; height:6px; border-radius:50%; background:var(--text-dim); flex-shrink:0; transition:all .15s; }
+.position-item.active { background:var(--accent-light); }
+.position-item.active .pos-name { color:var(--accent); font-weight:600; }
+.pos-dot { width:6px; height:6px; border-radius:50%; background:var(--border2); flex-shrink:0; transition:all .15s; }
 .position-item.active .pos-dot { background:var(--accent); }
-.pos-name { font-size:13px; font-weight:500; color:var(--text-mid); line-height:1.4; }
-.add-position-btn { margin:8px 12px 16px; padding:10px 12px; border:1.5px dashed var(--border); border-radius:10px; background:transparent; color:var(--text-dim); font-family:inherit; font-size:13px; cursor:pointer; width:calc(100% - 24px); text-align:left; display:flex; align-items:center; gap:8px; transition:all .15s; }
-.add-position-btn:hover { border-color:var(--accent); color:var(--accent); background:rgba(79,126,255,.05); }
-.main { margin-left:280px; flex:1; padding:40px 48px; max-width:calc(100vw - 280px); }
-.main-header { margin-bottom:32px; }
-.main-title { font-size:24px; font-weight:700; letter-spacing:-0.5px; margin-bottom:6px; }
-.main-subtitle { font-size:14px; color:var(--text-mid); }
-.jd-preview { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 24px; margin-bottom:24px; max-height:180px; overflow-y:auto; }
-.jd-preview::-webkit-scrollbar { width:4px; }
-.jd-preview::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
-.jd-label { font-size:10px; font-weight:600; letter-spacing:2px; color:var(--accent); text-transform:uppercase; margin-bottom:10px; }
-.jd-text { font-size:13px; color:var(--text-mid); line-height:1.8; white-space:pre-wrap; }
-.input-section { margin-bottom:24px; }
-.input-label { font-size:12px; font-weight:600; color:var(--text-mid); letter-spacing:0.5px; margin-bottom:10px; display:block; }
-textarea.resume-input { width:100%; min-height:200px; background:var(--surface); border:1.5px solid var(--border); border-radius:14px; padding:18px 20px; color:var(--text); font-family:inherit; font-size:14px; line-height:1.8; resize:vertical; outline:none; transition:border-color .15s; }
+.pos-name { font-size:12.5px; font-weight:500; color:var(--text-mid); line-height:1.4; flex:1; }
+.pos-actions { display:none; gap:4px; }
+.position-item:hover .pos-actions { display:flex; }
+.pos-action-btn { padding:2px 6px; border-radius:5px; border:1px solid var(--border); background:var(--surface); color:var(--text-dim); font-size:10px; cursor:pointer; transition:all .15s; }
+.pos-action-btn:hover { border-color:var(--accent); color:var(--accent); }
+.pos-action-btn.del:hover { border-color:var(--red); color:var(--red); }
+
+.add-position-btn { margin:8px 12px 20px; padding:9px 10px; border:1.5px dashed var(--border); border-radius:9px; background:transparent; color:var(--text-dim); font-family:inherit; font-size:12.5px; cursor:pointer; width:calc(100% - 24px); text-align:left; display:flex; align-items:center; gap:8px; transition:all .15s; }
+.add-position-btn:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-light); }
+
+/* ── TOP NAV ── */
+.top-nav { background:var(--surface); border-bottom:1px solid var(--border); padding:0 40px; display:flex; align-items:center; height:56px; gap:4px; position:sticky; top:0; z-index:5; }
+.tab-btn { padding:8px 18px; border-radius:8px; border:none; background:transparent; color:var(--text-mid); font-family:inherit; font-size:13.5px; font-weight:500; cursor:pointer; transition:all .15s; }
+.tab-btn:hover { background:var(--surface2); color:var(--text); }
+.tab-btn.active { background:var(--accent-light); color:var(--accent); font-weight:600; }
+
+/* ── PAGE CONTENT ── */
+.page { display:none; padding:36px 40px; }
+.page.active { display:block; }
+
+/* ── DASHBOARD ── */
+.stats-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-bottom:28px; }
+.stat-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 22px; }
+.stat-label { font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px; }
+.stat-value { font-size:28px; font-weight:800; letter-spacing:-1px; }
+.stat-value.blue { color:var(--accent); }
+.stat-value.green { color:var(--green); }
+.stat-value.red { color:var(--red); }
+.stat-value.yellow { color:var(--yellow); }
+.stat-sub { font-size:12px; color:var(--text-dim); margin-top:4px; }
+
+.dashboard-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.dash-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px 24px; }
+.dash-card-title { font-size:13px; font-weight:700; letter-spacing:-0.2px; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+
+.bar-chart { display:flex; flex-direction:column; gap:10px; }
+.bar-row { display:flex; align-items:center; gap:12px; }
+.bar-label { font-size:12px; color:var(--text-mid); width:90px; flex-shrink:0; text-align:right; line-height:1.3; }
+.bar-track { flex:1; background:var(--surface2); border-radius:4px; height:8px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:4px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width .6s ease; }
+.bar-fill.green { background:linear-gradient(90deg,#16A34A,#22c55e); }
+.bar-fill.red { background:linear-gradient(90deg,#DC2626,#ef4444); }
+.bar-fill.yellow { background:linear-gradient(90deg,#D97706,#f59e0b); }
+.bar-count { font-size:12px; font-weight:700; color:var(--text); width:24px; }
+
+.recent-list { display:flex; flex-direction:column; gap:8px; }
+.recent-item { display:flex; align-items:center; gap:12px; padding:10px 12px; background:var(--surface2); border-radius:9px; }
+.recent-verdict { width:52px; text-align:center; font-size:11px; font-weight:700; padding:3px 0; border-radius:20px; flex-shrink:0; }
+.recent-verdict.pass { background:var(--green-bg); color:var(--green); }
+.recent-verdict.fail { background:var(--red-bg); color:var(--red); }
+.recent-verdict.review { background:var(--yellow-bg); color:var(--yellow); }
+.recent-info { flex:1; min-width:0; }
+.recent-name { font-size:13px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.recent-pos { font-size:11px; color:var(--text-dim); }
+.recent-date { font-size:11px; color:var(--text-dim); flex-shrink:0; }
+
+/* ── SCREENING ── */
+.screen-layout { display:grid; grid-template-columns:1fr 1fr; gap:24px; min-height:calc(100vh - 56px - 72px); }
+.screen-left { display:flex; flex-direction:column; gap:16px; }
+.screen-right { display:flex; flex-direction:column; gap:16px; }
+
+.section-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.section-card-header { padding:14px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.section-card-title { font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent); }
+.section-card-body { padding:18px 20px; }
+
+.jd-text { font-size:12.5px; color:var(--text-mid); line-height:1.9; white-space:pre-wrap; max-height:200px; overflow-y:auto; }
+.jd-text::-webkit-scrollbar { width:3px; }
+.jd-text::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+.candidate-input { display:flex; flex-direction:column; gap:10px; }
+.input-label { font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); }
+input.cand-name { width:100%; background:var(--surface2); border:1.5px solid var(--border); border-radius:9px; padding:10px 14px; color:var(--text); font-family:inherit; font-size:14px; outline:none; transition:border-color .15s; }
+input.cand-name:focus { border-color:var(--accent); }
+input.cand-name::placeholder { color:var(--text-dim); }
+textarea.resume-input { width:100%; min-height:220px; background:var(--surface2); border:1.5px solid var(--border); border-radius:9px; padding:14px 16px; color:var(--text); font-family:inherit; font-size:13px; line-height:1.8; resize:vertical; outline:none; transition:border-color .15s; }
 textarea.resume-input:focus { border-color:var(--accent); }
-textarea.resume-input::placeholder { color:var(--text-dim); }
-.screen-btn { width:100%; padding:16px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; border-radius:12px; color:#fff; font-family:inherit; font-size:15px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; transition:all .2s; box-shadow:0 8px 32px rgba(79,126,255,.3); }
-.screen-btn:hover { transform:translateY(-1px); }
+textarea.resume-input::placeholder { color:var(--text-dim); font-size:12.5px; }
+
+.screen-btn { width:100%; padding:15px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; border-radius:11px; color:#fff; font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; transition:all .2s; box-shadow:0 6px 24px rgba(79,126,255,.35); }
+.screen-btn:hover:not(:disabled) { transform:translateY(-1px); box-shadow:0 10px 32px rgba(79,126,255,.4); }
 .screen-btn:disabled { opacity:.5; cursor:not-allowed; transform:none; }
-.spin { width:18px; height:18px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:none; }
-.result-card { margin-top:32px; background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; display:none; }
-.result-header { padding:20px 24px; display:flex; align-items:center; gap:16px; border-bottom:1px solid var(--border); }
-.verdict-badge { display:flex; align-items:center; gap:8px; padding:8px 18px; border-radius:30px; font-size:14px; font-weight:700; }
-.verdict-badge.pass { background:rgba(22,163,74,.15); color:var(--green); border:1px solid rgba(22,163,74,.3); }
-.verdict-badge.fail { background:rgba(220,38,38,.15); color:var(--red); border:1px solid rgba(220,38,38,.3); }
-.verdict-badge.review { background:rgba(217,119,6,.15); color:var(--yellow); border:1px solid rgba(217,119,6,.3); }
-.verdict-pos { font-size:13px; color:var(--text-mid); }
-.result-body { padding:24px; }
-.result-section { margin-bottom:24px; }
-.result-section:last-child { margin-bottom:0; }
-.result-section-title { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:12px; }
-.summary-text { font-size:14px; color:var(--text); line-height:1.8; }
-.criteria-list { display:flex; flex-direction:column; gap:10px; }
-.criteria-item { display:flex; align-items:flex-start; gap:12px; padding:12px 16px; background:var(--surface2); border-radius:10px; }
-.criteria-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
-.criteria-text { font-size:13px; color:var(--text-mid); line-height:1.6; }
-.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; z-index:100; padding:20px; }
+.spin { width:16px; height:16px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:none; }
+
+/* ── RESULT ── */
+.result-empty { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; color:var(--text-dim); text-align:center; flex:1; }
+.result-empty-icon { font-size:40px; margin-bottom:12px; opacity:.5; }
+.result-empty-text { font-size:13px; line-height:1.7; }
+
+.verdict-header { display:flex; align-items:center; gap:14px; padding:16px 20px; border-bottom:1px solid var(--border); }
+.verdict-badge { display:inline-flex; align-items:center; gap:7px; padding:7px 16px; border-radius:25px; font-size:13px; font-weight:700; }
+.verdict-badge.pass { background:var(--green-bg); color:var(--green); border:1px solid var(--green-border); }
+.verdict-badge.fail { background:var(--red-bg); color:var(--red); border:1px solid var(--red-border); }
+.verdict-badge.review { background:var(--yellow-bg); color:var(--yellow); border:1px solid var(--yellow-border); }
+.verdict-candidate { font-size:14px; font-weight:700; }
+.verdict-pos { font-size:12px; color:var(--text-dim); }
+
+.result-body { padding:18px 20px; display:flex; flex-direction:column; gap:18px; overflow-y:auto; max-height:calc(100vh - 56px - 180px); }
+.result-body::-webkit-scrollbar { width:3px; }
+.result-body::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+.res-section-title { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:10px; }
+.summary-text { font-size:13.5px; color:var(--text); line-height:1.85; }
+
+/* RADAR CHART */
+.radar-wrap { display:flex; flex-direction:column; align-items:center; }
+.radar-svg { width:100%; max-width:280px; }
+.radar-labels { display:grid; grid-template-columns:1fr 1fr; gap:6px; width:100%; margin-top:10px; }
+.radar-label-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-mid); }
+.radar-label-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+.criteria-list { display:flex; flex-direction:column; gap:8px; }
+.criteria-item { display:flex; align-items:flex-start; gap:10px; padding:10px 14px; background:var(--surface2); border-radius:9px; }
+.criteria-icon { font-size:14px; flex-shrink:0; margin-top:1px; }
+.criteria-text { font-size:12.5px; color:var(--text-mid); line-height:1.65; }
+
+.interview-q-list { display:flex; flex-direction:column; gap:8px; }
+.interview-q { display:flex; gap:10px; padding:11px 14px; background:var(--surface2); border-radius:9px; border-left:3px solid var(--accent); }
+.interview-q-num { font-size:11px; font-weight:800; color:var(--accent); flex-shrink:0; padding-top:1px; }
+.interview-q-text { font-size:12.5px; color:var(--text); line-height:1.65; }
+
+.result-actions { display:flex; gap:8px; padding:12px 20px; border-top:1px solid var(--border); }
+.action-btn { flex:1; padding:9px; border-radius:9px; border:1px solid var(--border); background:transparent; color:var(--text-mid); font-family:inherit; font-size:12px; font-weight:600; cursor:pointer; transition:all .15s; display:flex; align-items:center; justify-content:center; gap:6px; }
+.action-btn:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-light); }
+.action-btn.save { background:var(--accent); border-color:var(--accent); color:#fff; }
+.action-btn.save:hover { background:#3d6ef5; }
+
+/* ── HISTORY ── */
+.history-controls { display:flex; gap:10px; margin-bottom:20px; align-items:center; }
+.filter-btn { padding:7px 16px; border-radius:20px; border:1px solid var(--border); background:var(--surface); color:var(--text-mid); font-family:inherit; font-size:12.5px; cursor:pointer; transition:all .15s; }
+.filter-btn:hover { border-color:var(--accent); color:var(--accent); }
+.filter-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+.history-search { flex:1; padding:8px 14px; border-radius:9px; border:1.5px solid var(--border); background:var(--surface); color:var(--text); font-family:inherit; font-size:13px; outline:none; transition:border-color .15s; }
+.history-search:focus { border-color:var(--accent); }
+
+.history-table { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.history-thead { display:grid; grid-template-columns:1fr 120px 90px 110px 90px; padding:11px 20px; border-bottom:1px solid var(--border); background:var(--surface2); }
+.history-th { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); }
+.history-tbody { }
+.history-row { display:grid; grid-template-columns:1fr 120px 90px 110px 90px; padding:13px 20px; border-bottom:1px solid var(--border); align-items:center; transition:background .12s; cursor:pointer; }
+.history-row:last-child { border-bottom:none; }
+.history-row:hover { background:var(--surface2); }
+.history-name { font-size:13.5px; font-weight:600; color:var(--text); }
+.history-pos { font-size:12px; color:var(--text-mid); }
+.history-verdict-badge { display:inline-flex; align-items:center; padding:4px 11px; border-radius:20px; font-size:11px; font-weight:700; }
+.history-verdict-badge.pass { background:var(--green-bg); color:var(--green); }
+.history-verdict-badge.fail { background:var(--red-bg); color:var(--red); }
+.history-verdict-badge.review { background:var(--yellow-bg); color:var(--yellow); }
+.history-date { font-size:12px; color:var(--text-dim); }
+.history-del { padding:5px 10px; border-radius:7px; border:1px solid var(--border); background:transparent; color:var(--text-dim); font-size:11px; cursor:pointer; transition:all .15s; }
+.history-del:hover { border-color:var(--red); color:var(--red); }
+
+.history-empty { text-align:center; padding:60px 20px; color:var(--text-dim); }
+
+/* ── MODAL ── */
+.modal-overlay { position:fixed; inset:0; background:rgba(15,17,30,.6); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; z-index:100; padding:20px; }
 .modal-overlay.show { display:flex; }
-.modal { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:32px; width:100%; max-width:560px; }
-.modal h3 { font-size:18px; font-weight:700; margin-bottom:6px; }
-.modal p { font-size:13px; color:var(--text-mid); margin-bottom:24px; line-height:1.6; }
-.modal input,.modal textarea { width:100%; background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:12px 16px; color:var(--text); font-family:inherit; font-size:14px; outline:none; transition:border-color .15s; margin-bottom:12px; }
+.modal { background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:28px; width:100%; max-width:520px; box-shadow:var(--shadow-lg); }
+.modal h3 { font-size:17px; font-weight:700; margin-bottom:4px; }
+.modal p { font-size:12.5px; color:var(--text-mid); margin-bottom:20px; line-height:1.6; }
+.modal input,.modal textarea { width:100%; background:var(--surface2); border:1.5px solid var(--border); border-radius:9px; padding:11px 14px; color:var(--text); font-family:inherit; font-size:13.5px; outline:none; transition:border-color .15s; margin-bottom:10px; }
 .modal input:focus,.modal textarea:focus { border-color:var(--accent); }
-.modal textarea { min-height:200px; resize:vertical; line-height:1.7; }
-.modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:8px; }
-.btn-cancel { padding:10px 20px; border-radius:10px; border:1px solid var(--border); background:transparent; color:var(--text-mid); font-family:inherit; font-size:14px; cursor:pointer; transition:all .15s; }
-.btn-cancel:hover { border-color:var(--text-mid); color:var(--text); }
-.btn-save { padding:10px 24px; border-radius:10px; background:var(--accent); border:none; color:#fff; font-family:inherit; font-size:14px; font-weight:600; cursor:pointer; transition:all .15s; }
+.modal textarea { min-height:180px; resize:vertical; line-height:1.7; }
+.modal-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:8px; }
+.btn-cancel { padding:9px 18px; border-radius:9px; border:1px solid var(--border); background:transparent; color:var(--text-mid); font-family:inherit; font-size:13px; cursor:pointer; transition:all .15s; }
+.btn-cancel:hover { border-color:var(--text-mid); }
+.btn-save { padding:9px 22px; border-radius:9px; background:var(--accent); border:none; color:#fff; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer; }
 .btn-save:hover { background:#3d6ef5; }
-.empty-state { text-align:center; padding:80px 40px; color:var(--text-dim); }
-.empty-icon { font-size:48px; margin-bottom:16px; }
-.empty-text { font-size:15px; }
-.err-box { margin-top:20px; background:rgba(220,38,38,.1); border:1px solid rgba(220,38,38,.3); border-radius:12px; padding:16px 20px; font-size:14px; color:var(--red); }
+
+/* ── PAGE HEADER ── */
+.page-header { margin-bottom:24px; }
+.page-title { font-size:22px; font-weight:800; letter-spacing:-0.5px; margin-bottom:4px; }
+.page-subtitle { font-size:13px; color:var(--text-dim); }
+
+.empty-state { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:100px 40px; color:var(--text-dim); text-align:center; }
+.empty-icon { font-size:44px; margin-bottom:14px; opacity:.4; }
+
+/* ── COPY TOAST ── */
+.toast { position:fixed; bottom:28px; right:28px; background:var(--text); color:#fff; padding:12px 20px; border-radius:10px; font-size:13px; font-weight:500; opacity:0; transform:translateY(8px); transition:all .25s; z-index:200; pointer-events:none; }
+.toast.show { opacity:1; transform:translateY(0); }
+
 @keyframes spin { to{transform:rotate(360deg)} }
-@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-.result-card.show { display:block; animation:fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+.fade-in { animation:fadeIn .3s ease; }
+
+/* ── SCREENING PLACEHOLDER ── */
+.select-pos-hint { display:flex; flex-direction:column; align-items:center; justify-content:center; height:calc(100vh - 56px - 72px); color:var(--text-dim); text-align:center; }
+.select-pos-hint .hint-icon { font-size:40px; margin-bottom:14px; opacity:.4; }
+.select-pos-hint .hint-text { font-size:14px; }
 </style>
 </head>
 <body>
 <div class="layout">
+  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="logo">
-        <div class="logo-icon">&#128269;</div>
+        <div class="logo-icon">🔍</div>
         <div>
           <div class="logo-text">KONA HR LENS</div>
-          <div class="logo-sub">HR 스크리닝 툴</div>
+          <div class="logo-sub">HR Screening Tool</div>
         </div>
       </div>
     </div>
+    <div class="nav-section">
+      <div class="nav-label">메뉴</div>
+      <div class="nav-item active" id="nav-dashboard" onclick="switchTab('dashboard')">
+        <span class="nav-icon">📊</span> 대시보드
+      </div>
+      <div class="nav-item" id="nav-screening" onclick="switchTab('screening')">
+        <span class="nav-icon">🎯</span> 스크리닝
+      </div>
+      <div class="nav-item" id="nav-history" onclick="switchTab('history')">
+        <span class="nav-icon">📋</span> 이력 관리
+      </div>
+    </div>
     <div class="position-list">
-      <div class="position-label">포지션</div>
+      <div class="nav-label" style="padding:12px 8px 6px;">포지션</div>
       <div id="positionList"></div>
     </div>
-    <button class="add-position-btn" onclick="openAddModal()">+ 포지션 추가</button>
+    <button class="add-position-btn" onclick="openAddModal()">＋ 포지션 추가</button>
   </aside>
-  <main class="main" id="mainContent">
-    <div class="empty-state">
-      <div class="empty-icon">&#128072;</div>
-      <div class="empty-text">왼쪽에서 포지션을 선택해주세요</div>
+
+  <!-- MAIN -->
+  <main class="main">
+    <!-- TOP NAV -->
+    <div class="top-nav" id="topNav" style="display:none;">
+      <button class="tab-btn active" id="tab-jd" onclick="switchScreenTab('jd')">JD 정보</button>
+      <button class="tab-btn" id="tab-input" onclick="switchScreenTab('input')">이력서 입력</button>
+      <button class="tab-btn" id="tab-result" onclick="switchScreenTab('result')">스크리닝 결과</button>
+    </div>
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="page-dashboard">
+      <!-- 브랜드 배너 -->
+      <div style="background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:14px;padding:16px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:0.5px;margin-bottom:3px;">KONA AI HR SCREENING</div>
+          <div style="font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.3px;">Claude AI 기반 이력서 스크리닝 시스템</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:11px;color:rgba(255,255,255,.7);margin-bottom:2px;">HR팀 자체 개발 · 2025</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.9);font-weight:600;">🔍 KONA HR LENS v2.0</div>
+        </div>
+      </div>
+
+      <!-- 현재 스크리닝 현황 (로컬 기반) -->
+      <div class="page-header">
+        <div class="page-title">대시보드</div>
+        <div class="page-subtitle">채용 스크리닝 현황을 한눈에 확인하세요</div>
+      </div>
+      <div class="stats-grid" id="statsGrid"></div>
+
+      <!-- 그리팅 연동 예정 섹션 -->
+      <div style="margin-top:8px;border:1.5px dashed var(--border2);border-radius:14px;padding:28px 32px;background:var(--surface);">
+        <div style="display:flex;align-items:flex-start;gap:20px;">
+          <div style="font-size:32px;flex-shrink:0;">🔗</div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:6px;">그리팅 ATS 연동 후 활성화됩니다</div>
+            <div style="font-size:13px;color:var(--text-mid);line-height:1.9;margin-bottom:16px;">
+              그리팅과 연동되면 아래 인사이트를 실시간으로 확인할 수 있습니다.
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div style="padding:12px 16px;background:var(--surface2);border-radius:10px;font-size:13px;color:var(--text-mid);">
+                <div style="font-size:16px;margin-bottom:4px;">📊</div>
+                <div style="font-weight:600;color:var(--text);margin-bottom:2px;">공고별 지원자 현황</div>
+                <div style="font-size:12px;">진행 중인 공고의 지원자 수 및 AI 스크리닝 완료율</div>
+              </div>
+              <div style="padding:12px 16px;background:var(--surface2);border-radius:10px;font-size:13px;color:var(--text-mid);">
+                <div style="font-size:16px;margin-bottom:4px;">🎯</div>
+                <div style="font-weight:600;color:var(--text);margin-bottom:2px;">AI 판정 정확도</div>
+                <div style="font-size:12px;">적합 판정 후 실제 면접 전환율 및 합격률 추적</div>
+              </div>
+              <div style="padding:12px 16px;background:var(--surface2);border-radius:10px;font-size:13px;color:var(--text-mid);">
+                <div style="font-size:16px;margin-bottom:4px;">⚡</div>
+                <div style="font-weight:600;color:var(--text);margin-bottom:2px;">미처리 지원자 알림</div>
+                <div style="font-size:12px;">그리팅에 지원자 들어왔는데 AI 스크리닝 안 된 건</div>
+              </div>
+              <div style="padding:12px 16px;background:var(--surface2);border-radius:10px;font-size:13px;color:var(--text-mid);">
+                <div style="font-size:16px;margin-bottom:4px;">📈</div>
+                <div style="font-weight:600;color:var(--text);margin-bottom:2px;">역량 패턴 분석</div>
+                <div style="font-size:12px;">면접 합격자들의 공통 역량 점수 패턴</div>
+              </div>
+            </div>
+            <div style="margin-top:16px;padding:12px 16px;background:rgba(79,126,255,.08);border-radius:10px;border-left:3px solid var(--accent);">
+              <div style="font-size:12px;color:var(--accent);font-weight:600;margin-bottom:3px;">📌 연동 방법</div>
+              <div style="font-size:12px;color:var(--text-mid);line-height:1.7;">그리팅 API 키 발급 → <code style="background:var(--surface2);padding:1px 6px;border-radius:4px;font-size:11px;">support@doodlin.co.kr</code> 로 문의 (비즈니스 플랜 필요)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREENING PAGE -->
+    <div class="page" id="page-screening">
+      <div id="screeningContent">
+        <div class="select-pos-hint">
+          <div class="hint-icon">👈</div>
+          <div class="hint-text">왼쪽에서 포지션을 선택해주세요</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORY PAGE -->
+    <div class="page" id="page-history">
+      <div class="page-header">
+        <div class="page-title">이력 관리</div>
+        <div class="page-subtitle">스크리닝 결과가 누적 저장됩니다</div>
+      </div>
+      <div class="history-controls">
+        <button class="filter-btn active" onclick="filterHistory('all', this)">전체</button>
+        <button class="filter-btn" onclick="filterHistory('적합', this)">✅ 적합</button>
+        <button class="filter-btn" onclick="filterHistory('검토필요', this)">🔶 검토필요</button>
+        <button class="filter-btn" onclick="filterHistory('부적합', this)">❌ 부적합</button>
+        <input class="history-search" type="text" placeholder="이름 또는 포지션 검색..." oninput="renderHistory()" id="historySearch" />
+      </div>
+      <div id="historyContent"></div>
     </div>
   </main>
 </div>
+
+<!-- ADD/EDIT MODAL -->
 <div class="modal-overlay" id="addModal">
   <div class="modal">
-    <h3>포지션 추가</h3>
-    <p>포지션명과 JD를 입력하면 스크리닝 기준으로 저장돼요.<br>개인정보 없이 경력/자격 내용만 입력해주세요.</p>
+    <h3 id="modalTitle">포지션 추가</h3>
+    <p>포지션명과 JD를 입력하면 스크리닝 기준으로 저장돼요.</p>
     <input type="text" id="newPosName" placeholder="포지션명 (예: 백엔드 개발자)" />
     <textarea id="newPosJD" placeholder="JD 내용을 붙여넣어 주세요..."></textarea>
     <div class="modal-actions">
@@ -124,21 +381,633 @@ textarea.resume-input::placeholder { color:var(--text-dim); }
     </div>
   </div>
 </div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal" style="max-width:620px;">
+    <h3 id="detailTitle" style="margin-bottom:16px;"></h3>
+    <div id="detailBody" style="max-height:70vh;overflow-y:auto;font-size:13.5px;line-height:1.8;color:var(--text-mid);"></div>
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn-cancel" onclick="closeDetailModal()">닫기</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
-const DEFAULT_POSITIONS=[{id:'global-marketing',name:'글로벌마케팅',jd:`[소속] 문화사업팀 소속. 공간·문화·콘텐츠를 비즈니스로 설계하고 시장과 연결하는 역할.\n\n[담당 업무]\n- 글로벌 시장 타겟 마케팅 전략 수립 및 실행\n- 해외 플랫폼/채널/파트너와 커뮤니케이션하며 콘텐츠 유통 구조 설계\n- 글로벌 캠페인 성과 데이터 기반 분석 및 개선\n- 브랜드 가치를 글로벌 언어/맥락에 맞게 재해석\n\n[필수 조건]\n- 영어로 글로벌 파트너 및 내부 이해관계자와 원활한 협업 가능 (필수)\n- 다품종 콘텐츠 구조에 맞춘 글로벌 마케팅 실행 경험\n- 아이디어를 이슈로 만들고 확산시킨 경험\n- 사원~과장급 (경력 유연)\n\n[우대 조건]\n- 글로벌 플랫폼/해외 유통 네트워크 이해도\n- 데이터 분석으로 글로벌 마케팅 성과 증명 경험\n- 글로벌 PR 경험`},{id:'service-planning',name:'서비스 기획_결제플랫폼',jd:`[서비스] 코나카드·지역화폐 포함 결제 플랫폼. B2C/B2B/B2G 다양한 이해관계자 대상.\n\n[담당 업무]\n- 결제 플랫폼 프론트엔드/백엔드 서비스 기획 및 고도화\n- 지역화폐 서비스 유저 시나리오 설계 및 정책 수립\n- 데이터 기반 핵심 지표 정의 및 서비스 개선 과제 도출\n- 개발/디자인/운영/외부 파트너 협업\n\n[필수 조건]\n- B2C/B2B/B2G 플랫폼 서비스 기획 또는 운영 경험\n- Axure, Figma, Confluence, Jira 등 기획·협업 툴 실무 경험\n- 데이터 기반 문제 정의 및 개선 방향 수립·실행 경험\n\n[우대 조건]\n- 결제/금융/지역화폐 등 핀테크 또는 공공 연계 서비스 기획 경험\n- 복잡한 요구사항을 구조화하여 서비스로 구현한 경험\n- 서비스 기획~운영~고도화 라이프사이클 전체 경험`},{id:'ai-developer',name:'에이전틱 AI 서비스 개발자',jd:`[서비스] 대체투자 AI 에이전트 서비스(KIWA), ERP AI 워크스페이스. 딥 에이전트 아키텍처 기반.\n\n[담당 업무]\n- 딥 에이전트 플랫폼 핵심 기능 개발 및 고도화\n- 에이전트 오케스트레이션, 프롬프트 엔지니어링, 도구 설계, 스킬 개발\n- 고객사 요구사항 반영한 서비스 아키텍처 개선 및 신규 기능 구현\n- 최신 AI 기술 탐색 및 서비스 적용\n\n[필수 조건]\n- AI 관련 프로젝트 개발 경험 1년 이상\n- React와 Python 개발 능숙\n- MCP, RAG, LangChain 등 최신 AI 기술 이해도 또는 활용 경험\n- Cursor, Claude Code 등 AI 코딩 도구 활용 능력\n\n[우대 조건]\n- AI 에이전트 기반 프로덕트 개발/운영 경험\n- 영어 기술 문서 독해 능력\n- Docker, AWS 인프라, DevOps 경험`},{id:'service-ops',name:'서비스운영_결제플랫폼',jd:`[서비스] 지역화폐 지역 커뮤니티 플랫폼. 전국 60여 개 지자체 대상.\n\n[담당 업무]\n- 지자체 플랫폼 운영 이슈 해결 (백오피스 운영)\n- 결제 플랫폼 운영 프로세스 검토 및 개선/기획\n- 데이터 지원, 정책 수당 및 정산 업무\n- VOC 분석 및 개선 대응책 제시\n\n[필수 조건]\n- 내부 유관 부서와 원활한 커뮤니케이션을 통한 서비스 운영 경험\n- 정확하고 안정적인 업무처리 능력\n- 결제 산업·플랫폼 구조에 대한 이해와 관심\n\n[우대 조건]\n- 플랫폼/결제 서비스 내부 운영 정책 또는 프로세스 수립 경험\n- 효율적 운영 프로세스 개선 적극적 태도\n- 개발 부서와 소통 가능한 IT 지식`},{id:'sales',name:'영업_결제플랫폼',jd:`[서비스] 지역화폐 기반 지역 커뮤니티 플랫폼. 전국 60여 개 지자체 대상.\n\n[담당 업무]\n- 지역화폐 사업 지자체 제휴 구축 및 운영\n- 다양한 부가 서비스 제안 및 영업\n- 지자체와 지속적 소통하며 플랫폼 운영 및 관리\n\n[필수 조건]\n- 지자체/가맹점 등 다양한 이해관계자와 네트워크 유지 역량\n- 개발/사업/디자인 등 다양한 부서와 협업 능력\n- 입찰 및 계약 관리를 위한 제안서·공문서 작성 능력\n\n[우대 조건]\n- 플랫폼 서비스/결제/IT 산업 이해도\n- 공공영업(B2G) 및 입찰 비즈니스 경험`},{id:'ir',name:'IR_공통',jd:`[담당 업무]\n- 국내외 투자자·애널리스트와 상시 소통하며 코나아이 가치 전달\n- 법령 기반 사업 내용 및 재무 현황 공시\n- 실적 발표 및 정기 주주총회 준비·운영\n- 분기별 IR 자료 작성 및 업데이트\n\n[필수 조건]\n- IR 경험 3년 이상 ~ 9년 이하\n- 기본적인 재무지식 보유 (재무제표 이해 필수)\n- 회사 가치를 외부에 알릴 수 있는 세일즈 역량\n\n[우대 조건]\n- 스타트업에서 사업·전략·IR 등 다양한 역할 수행 경험\n- 투자자 관점에 맞춰 시장·비즈니스 구조 설명 및 설득 경험\n- 문서 작성 능력 및 정보 정리·전달 역량`},{id:'dba',name:'DBA',jd:`[소속] System Operation팀.\n\n[담당 업무]\n- DB 모니터링, 백업/복구, DB 암호화 솔루션 관리\n- DB 성능 최적화 (Object 관리, SQL 튜닝)\n- 장애 분석 및 Trouble Shooting\n\n[필수 조건]\n- DBA 운영 경험 3년 이상\n- Oracle DBA 경험 3년 이상 (필수)\n- 개발자 및 데이터 담당자와 원활한 커뮤니케이션 능력\n\n[우대 조건]\n- 대용량 DB 구축/운영 경험 및 RAC 운영 경험\n- RAC EXADATA 운영 경험\n- Shell script, PL/SQL 개발 능력\n- 리눅스 환경 DB 경험`}];
-let positions=[],selectedId=null;
-function init(){const saved=localStorage.getItem('screening_positions');if(saved){positions=JSON.parse(saved);}else{positions=DEFAULT_POSITIONS;saveToStorage();}renderSidebar();}
-function saveToStorage(){localStorage.setItem('screening_positions',JSON.stringify(positions));}
-function renderSidebar(){const list=document.getElementById('positionList');list.innerHTML=positions.map(p=>`<div class="position-item ${p.id===selectedId?'active':''}" onclick="selectPosition('${p.id}')"><div class="pos-dot"></div><div class="pos-name">${p.name}</div></div>`).join('');}
-function selectPosition(id){selectedId=id;renderSidebar();const pos=positions.find(p=>p.id===id);if(!pos)return;document.getElementById('mainContent').innerHTML=`<div class="main-header"><div class="main-title">${pos.name}</div><div class="main-subtitle">이력서 내용을 붙여넣고 스크리닝을 시작하세요</div></div><div class="jd-preview"><div class="jd-label">JD 요약</div><div class="jd-text">${pos.jd}</div></div><div class="input-section"><label class="input-label">이력서 내용 (개인정보 제외 — 경력/자격사항만)</label><textarea class="resume-input" id="resumeInput" placeholder="경력사항, 주요 업무, 스킬, 자격증 등을 붙여넣어 주세요.&#10;이름, 연락처, 주소 등 개인정보는 제외해주세요."></textarea></div><button class="screen-btn" id="screenBtn" onclick="runScreening('${id}')"><div class="spin" id="spin"></div><span id="btnTxt">스크리닝 시작</span></button><div id="resultArea"></div>`;}
-async function runScreening(posId){const pos=positions.find(p=>p.id===posId);const resume=document.getElementById('resumeInput').value.trim();if(!resume){alert('이력서 내용을 입력해주세요.');return;}const btn=document.getElementById('screenBtn'),spin=document.getElementById('spin'),btnTxt=document.getElementById('btnTxt'),resultArea=document.getElementById('resultArea');btn.disabled=true;spin.style.display='block';btnTxt.textContent='분석 중...';resultArea.innerHTML='';
-const prompt=`당신은 코나아이의 경험 많은 채용 담당자입니다. 아래 JD와 이력서를 바탕으로 지원자를 종합적으로 평가해주세요.\n\n[포지션]\n${pos.name}\n\n[JD]\n${pos.jd}\n\n[지원자 이력서 (개인정보 제외)]\n${resume}\n\n[평가 방식]\n체크리스트식으로 조건을 하나씩 대조하지 마세요. 대신 아래 관점으로 종합적으로 판단하세요.\n- 전반적인 경력 방향성이 이 포지션과 맞는가\n- 필수 조건 중 일부가 부족하더라도, 다른 경험이나 역량이 이를 충분히 보완할 수 있는가\n- 지원자의 성장 가능성과 잠재력은 어떠한가\n- 포지션에서 실제로 잘 해낼 수 있을 가능성이 있는가\n\n[판정 기준]\n- 적합: 전반적으로 포지션에 잘 맞고, 실제 업무를 잘 수행할 가능성이 높음. 필수 조건 일부가 완벽하지 않아도 다른 강점으로 충분히 보완 가능한 경우 포함\n- 부적합: 경력 방향성이 포지션과 맞지 않거나, 핵심 역량이 현저히 부족하여 업무 수행이 어려울 것으로 판단됨\n- 검토필요: 가능성은 있으나 면접을 통해 추가로 확인이 필요한 부분이 있는 경우\n\n아래 JSON 형식으로만 응답하세요. 다른 텍스트 없이 JSON만:\n\n{\n  "verdict": "적합" 또는 "부적합" 또는 "검토필요",\n  "summary": "2~3문장으로 종합 판정 요약. 조건 나열이 아닌 전체적인 인상과 판단 근거를 서술",\n  "pros": ["강점 1", "강점 2", "강점 3"],\n  "cons": ["아쉬운 점 1", "아쉬운 점 2"],\n  "recommendation": "면접 진행 여부에 대한 최종 의견. 면접에서 확인하면 좋을 포인트도 포함"\n}`;
-try{const res=await fetch('/.netlify/functions/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});const data=await res.json();const raw=data.content.map(i=>i.text||'').join('');const clean=raw.replace(/```json|```/g,'').trim();const result=JSON.parse(clean);renderResult(result,pos.name);}catch(e){resultArea.innerHTML=`<div class="err-box">오류가 났어요. 잠시 후 다시 시도해주세요.<br><small>${e.message}</small></div>`;}
-btn.disabled=false;spin.style.display='none';btnTxt.textContent='스크리닝 시작';}
-function renderResult(r,posName){const verdictClass=r.verdict==='적합'?'pass':r.verdict==='부적합'?'fail':'review';const verdictIcon=r.verdict==='적합'?'[적합]':r.verdict==='부적합'?'[부적합]':'[검토필요]';const prosHTML=(r.pros||[]).map(p=>`<div class="criteria-item"><div class="criteria-icon">&#10003;</div><div class="criteria-text">${p}</div></div>`).join('');const consHTML=(r.cons||[]).map(c=>`<div class="criteria-item"><div class="criteria-icon">&#9651;</div><div class="criteria-text">${c}</div></div>`).join('');document.getElementById('resultArea').innerHTML=`<div class="result-card show"><div class="result-header"><div class="verdict-badge ${verdictClass}">${verdictIcon} ${r.verdict}</div><div class="verdict-pos">${posName}</div></div><div class="result-body"><div class="result-section"><div class="result-section-title">종합 요약</div><div class="summary-text">${r.summary}</div></div>${prosHTML?`<div class="result-section"><div class="result-section-title">강점</div><div class="criteria-list">${prosHTML}</div></div>`:''} ${consHTML?`<div class="result-section"><div class="result-section-title">아쉬운 점</div><div class="criteria-list">${consHTML}</div></div>`:''}<div class="result-section"><div class="result-section-title">면접 진행 의견</div><div class="summary-text">${r.recommendation}</div></div></div></div>`;}
-function openAddModal(){document.getElementById('addModal').classList.add('show');}
-function closeAddModal(){document.getElementById('addModal').classList.remove('show');document.getElementById('newPosName').value='';document.getElementById('newPosJD').value='';}
-function savePosition(){const name=document.getElementById('newPosName').value.trim();const jd=document.getElementById('newPosJD').value.trim();if(!name||!jd){alert('포지션명과 JD를 모두 입력해주세요.');return;}const id='pos-'+Date.now();positions.push({id,name,jd});saveToStorage();renderSidebar();closeAddModal();}
+// ──────────────────────────────────────────────
+// DATA
+// ──────────────────────────────────────────────
+const DEFAULT_POSITIONS = [
+  {id:'global-marketing',name:'글로벌마케팅',jd:`[소속] 문화사업팀 소속. 공간·문화·콘텐츠를 비즈니스로 설계하고 시장과 연결하는 역할.\n\n[담당 업무]\n- 글로벌 시장 타겟 마케팅 전략 수립 및 실행\n- 해외 플랫폼/채널/파트너와 커뮤니케이션하며 콘텐츠 유통 구조 설계\n- 글로벌 캠페인 성과 데이터 기반 분석 및 개선\n- 브랜드 가치를 글로벌 언어/맥락에 맞게 재해석\n\n[필수 조건]\n- 영어로 글로벌 파트너 및 내부 이해관계자와 원활한 협업 가능 (필수)\n- 다품종 콘텐츠 구조에 맞춘 글로벌 마케팅 실행 경험\n- 아이디어를 이슈로 만들고 확산시킨 경험\n- 사원~과장급 (경력 유연)\n\n[우대 조건]\n- 글로벌 플랫폼/해외 유통 네트워크 이해도\n- 데이터 분석으로 글로벌 마케팅 성과 증명 경험\n- 글로벌 PR 경험`},
+  {id:'service-planning',name:'서비스 기획_결제플랫폼',jd:`[서비스] 코나카드·지역화폐 포함 결제 플랫폼. B2C/B2B/B2G 다양한 이해관계자 대상.\n\n[담당 업무]\n- 결제 플랫폼 프론트엔드/백엔드 서비스 기획 및 고도화\n- 지역화폐 서비스 유저 시나리오 설계 및 정책 수립\n- 데이터 기반 핵심 지표 정의 및 서비스 개선 과제 도출\n- 개발/디자인/운영/외부 파트너 협업\n\n[필수 조건]\n- B2C/B2B/B2G 플랫폼 서비스 기획 또는 운영 경험\n- Axure, Figma, Confluence, Jira 등 기획·협업 툴 실무 경험\n- 데이터 기반 문제 정의 및 개선 방향 수립·실행 경험\n\n[우대 조건]\n- 결제/금융/지역화폐 등 핀테크 또는 공공 연계 서비스 기획 경험\n- 복잡한 요구사항을 구조화하여 서비스로 구현한 경험\n- 서비스 기획~운영~고도화 라이프사이클 전체 경험`},
+  {id:'ai-developer',name:'에이전틱 AI 서비스 개발자',jd:`[서비스] 대체투자 AI 에이전트 서비스(KIWA), ERP AI 워크스페이스. 딥 에이전트 아키텍처 기반.\n\n[담당 업무]\n- 딥 에이전트 플랫폼 핵심 기능 개발 및 고도화\n- 에이전트 오케스트레이션, 프롬프트 엔지니어링, 도구 설계, 스킬 개발\n- 고객사 요구사항 반영한 서비스 아키텍처 개선 및 신규 기능 구현\n- 최신 AI 기술 탐색 및 서비스 적용\n\n[필수 조건]\n- AI 관련 프로젝트 개발 경험 1년 이상\n- React와 Python 개발 능숙\n- MCP, RAG, LangChain 등 최신 AI 기술 이해도 또는 활용 경험\n- Cursor, Claude Code 등 AI 코딩 도구 활용 능력\n\n[우대 조건]\n- AI 에이전트 기반 프로덕트 개발/운영 경험\n- 영어 기술 문서 독해 능력\n- Docker, AWS 인프라, DevOps 경험`},
+  {id:'service-ops',name:'서비스운영_결제플랫폼',jd:`[서비스] 지역화폐 지역 커뮤니티 플랫폼. 전국 60여 개 지자체 대상.\n\n[담당 업무]\n- 지자체 플랫폼 운영 이슈 해결 (백오피스 운영)\n- 결제 플랫폼 운영 프로세스 검토 및 개선/기획\n- 데이터 지원, 정책 수당 및 정산 업무\n- VOC 분석 및 개선 대응책 제시\n\n[필수 조건]\n- 내부 유관 부서와 원활한 커뮤니케이션을 통한 서비스 운영 경험\n- 정확하고 안정적인 업무처리 능력\n- 결제 산업·플랫폼 구조에 대한 이해와 관심\n\n[우대 조건]\n- 플랫폼/결제 서비스 내부 운영 정책 또는 프로세스 수립 경험\n- 효율적 운영 프로세스 개선 적극적 태도\n- 개발 부서와 소통 가능한 IT 지식`},
+  {id:'sales',name:'영업_결제플랫폼',jd:`[서비스] 지역화폐 기반 지역 커뮤니티 플랫폼. 전국 60여 개 지자체 대상.\n\n[담당 업무]\n- 지역화폐 사업 지자체 제휴 구축 및 운영\n- 다양한 부가 서비스 제안 및 영업\n- 지자체와 지속적 소통하며 플랫폼 운영 및 관리\n\n[필수 조건]\n- 지자체/가맹점 등 다양한 이해관계자와 네트워크 유지 역량\n- 개발/사업/디자인 등 다양한 부서와 협업 능력\n- 입찰 및 계약 관리를 위한 제안서·공문서 작성 능력\n\n[우대 조건]\n- 플랫폼 서비스/결제/IT 산업 이해도\n- 공공영업(B2G) 및 입찰 비즈니스 경험`},
+  {id:'ir',name:'IR_공통',jd:`[담당 업무]\n- 국내외 투자자·애널리스트와 상시 소통하며 코나아이 가치 전달\n- 법령 기반 사업 내용 및 재무 현황 공시\n- 실적 발표 및 정기 주주총회 준비·운영\n- 분기별 IR 자료 작성 및 업데이트\n\n[필수 조건]\n- IR 경험 3년 이상 ~ 9년 이하\n- 기본적인 재무지식 보유 (재무제표 이해 필수)\n- 회사 가치를 외부에 알릴 수 있는 세일즈 역량\n\n[우대 조건]\n- 스타트업에서 사업·전략·IR 등 다양한 역할 수행 경험\n- 투자자 관점에 맞춰 시장·비즈니스 구조 설명 및 설득 경험\n- 문서 작성 능력 및 정보 정리·전달 역량`},
+  {id:'dba',name:'DBA',jd:`[소속] System Operation팀.\n\n[담당 업무]\n- DB 모니터링, 백업/복구, DB 암호화 솔루션 관리\n- DB 성능 최적화 (Object 관리, SQL 튜닝)\n- 장애 분석 및 Trouble Shooting\n\n[필수 조건]\n- DBA 운영 경험 3년 이상\n- Oracle DBA 경험 3년 이상 (필수)\n- 개발자 및 데이터 담당자와 원활한 커뮤니케이션 능력\n\n[우대 조건]\n- 대용량 DB 구축/운영 경험 및 RAC 운영 경험\n- RAC EXADATA 운영 경험\n- Shell script, PL/SQL 개발 능력\n- 리눅스 환경 DB 경험`}
+];
+
+// ──────────────────────────────────────────────
+// STATE
+// ──────────────────────────────────────────────
+let positions = [];
+let history = []; // {id, candidateName, positionId, positionName, verdict, summary, pros, cons, recommendation, scores, interviewQuestions, date}
+let selectedPosId = null;
+let currentTab = 'dashboard';
+let currentScreenTab = 'jd';
+let editingPosId = null;
+let historyFilter = 'all';
+let lastResult = null;
+
+// ──────────────────────────────────────────────
+// INIT
+// ──────────────────────────────────────────────
+function init() {
+  const savedPos = localStorage.getItem('kona_positions');
+  const savedHist = localStorage.getItem('kona_history');
+  positions = savedPos ? JSON.parse(savedPos) : DEFAULT_POSITIONS;
+  history = savedHist ? JSON.parse(savedHist) : [];
+  if (!savedPos) savePositions();
+  if (!savedHist) saveHistory();
+  renderSidebar();
+  renderDashboard();
+  renderHistory();
+}
+
+function generateSampleHistory() {
+  const samples = [
+    {posId:'global-marketing',posName:'글로벌마케팅',name:'김민준',verdict:'적합',date:'2025-06-01',scores:{글로벌커뮤니케이션:85,마케팅실행력:90,데이터분석:75,콘텐츠기획:88,성장가능성:82}},
+    {posId:'ai-developer',posName:'에이전틱 AI 서비스 개발자',name:'이서연',verdict:'검토필요',date:'2025-05-30',scores:{AI개발경험:70,React_Python:80,에이전트이해:65,협업능력:85,성장가능성:90}},
+    {posId:'dba',posName:'DBA',name:'박준혁',verdict:'부적합',date:'2025-05-29',scores:{Oracle경험:40,DB운영:55,성능최적화:45,장애대응:50,커뮤니케이션:70}},
+    {posId:'ir',posName:'IR_공통',name:'최수아',verdict:'적합',date:'2025-05-28',scores:{IR경험:92,재무지식:88,세일즈역량:85,문서작성:90,성장가능성:80}},
+    {posId:'service-planning',posName:'서비스 기획_결제플랫폼',name:'정다은',verdict:'적합',date:'2025-05-27',scores:{서비스기획경험:88,툴활용:82,데이터기반사고:85,이해관계자협업:90,성장가능성:78}},
+    {posId:'sales',posName:'영업_결제플랫폼',name:'강태양',verdict:'검토필요',date:'2025-05-26',scores:{네트워크역량:75,협업능력:80,문서작성:70,IT이해도:65,성장가능성:85}},
+  ];
+  return samples.map((s,i) => ({
+    id: 'sample-'+i,
+    candidateName: s.name,
+    positionId: s.posId,
+    positionName: s.posName,
+    verdict: s.verdict,
+    summary: '샘플 데이터입니다.',
+    pros: ['샘플 강점 1', '샘플 강점 2'],
+    cons: ['샘플 아쉬운 점'],
+    recommendation: '샘플 면접 의견',
+    scores: s.scores,
+    interviewQuestions: ['샘플 면접 질문 1', '샘플 면접 질문 2', '샘플 면접 질문 3'],
+    date: s.date
+  }));
+}
+
+function savePositions() { localStorage.setItem('kona_positions', JSON.stringify(positions)); }
+function saveHistory() { localStorage.setItem('kona_history', JSON.stringify(history)); }
+
+// ──────────────────────────────────────────────
+// SIDEBAR
+// ──────────────────────────────────────────────
+function renderSidebar() {
+  const list = document.getElementById('positionList');
+  list.innerHTML = positions.map(p => `
+    <div class="position-item ${p.id===selectedPosId?'active':''}" onclick="selectPosition('${p.id}')">
+      <div class="pos-dot"></div>
+      <div class="pos-name">${p.name}</div>
+      <div class="pos-actions">
+        <button class="pos-action-btn" onclick="event.stopPropagation();openEditModal('${p.id}')">편집</button>
+        <button class="pos-action-btn del" onclick="event.stopPropagation();deletePosition('${p.id}')">삭제</button>
+      </div>
+    </div>`).join('');
+}
+
+function selectPosition(id) {
+  selectedPosId = id;
+  renderSidebar();
+  switchTab('screening');
+  renderScreening();
+}
+
+// ──────────────────────────────────────────────
+// TAB NAVIGATION
+// ──────────────────────────────────────────────
+function switchTab(tab) {
+  currentTab = tab;
+  ['dashboard','screening','history'].forEach(t => {
+    document.getElementById('page-'+t).classList.toggle('active', t===tab);
+    document.getElementById('nav-'+t).classList.toggle('active', t===tab);
+  });
+  document.getElementById('topNav').style.display = tab==='screening' ? 'flex' : 'none';
+  if (tab==='dashboard') renderDashboard();
+  if (tab==='history') renderHistory();
+}
+
+function switchScreenTab(tab) {
+  currentScreenTab = tab;
+  ['jd','input','result'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+  });
+  renderScreening();
+}
+
+// ──────────────────────────────────────────────
+// DASHBOARD
+// ──────────────────────────────────────────────
+function renderDashboard() {
+  // 실제 로컬 스크리닝 데이터만 반영 (샘플 제외)
+  const realHistory = history.filter(h => !h.id.startsWith('sample-'));
+  const total = realHistory.length;
+  const pass = realHistory.filter(h=>h.verdict==='적합').length;
+  const fail = realHistory.filter(h=>h.verdict==='부적합').length;
+  const review = realHistory.filter(h=>h.verdict==='검토필요').length;
+  const passRate = total ? Math.round(pass/total*100) : 0;
+  const savedHours = Math.round(total * 0.5 * 10) / 10;
+
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-label">총 스크리닝</div><div class="stat-value blue">${total || '-'}</div><div class="stat-sub">${total ? '전체 처리 건수' : '아직 스크리닝 없음'}</div></div>
+    <div class="stat-card"><div class="stat-label">적합</div><div class="stat-value green">${total ? pass : '-'}</div><div class="stat-sub">${total ? '적합률 '+passRate+'%' : '—'}</div></div>
+    <div class="stat-card"><div class="stat-label">검토필요</div><div class="stat-value yellow">${total ? review : '-'}</div><div class="stat-sub">${total ? '면접 검토 대상' : '—'}</div></div>
+    <div class="stat-card"><div class="stat-label">부적합</div><div class="stat-value red">${total ? fail : '-'}</div><div class="stat-sub">${total ? '전체 중 '+Math.round(fail/total*100)+'%' : '—'}</div></div>
+    <div class="stat-card"><div class="stat-label">절감 시간</div><div class="stat-value" style="color:var(--accent2);">${total ? savedHours+'h' : '-'}</div><div class="stat-sub">${total ? '건당 30분 기준' : '—'}</div></div>
+  `;
+}
+
+// ──────────────────────────────────────────────
+// SCREENING
+// ──────────────────────────────────────────────
+function renderScreening() {
+  if (!selectedPosId) {
+    document.getElementById('screeningContent').innerHTML = `<div class="select-pos-hint"><div class="hint-icon">👈</div><div class="hint-text">왼쪽에서 포지션을 선택해주세요</div></div>`;
+    return;
+  }
+  const pos = positions.find(p=>p.id===selectedPosId);
+  if (!pos) return;
+
+  if (currentScreenTab === 'jd') {
+    document.getElementById('screeningContent').innerHTML = `
+      <div style="padding:28px 40px;">
+        <div class="page-header"><div class="page-title">${pos.name}</div><div class="page-subtitle">포지션 JD 및 평가 기준</div></div>
+        <div class="section-card">
+          <div class="section-card-header"><div class="section-card-title">JD 전문</div></div>
+          <div class="section-card-body"><div class="jd-text">${pos.jd}</div></div>
+        </div>
+        <div class="section-card" style="margin-top:16px;">
+          <div class="section-card-header"><div class="section-card-title">AI 평가 기준</div></div>
+          <div class="section-card-body">
+            <div style="font-size:13px;color:var(--text-mid);line-height:1.9;">
+              <b style="color:var(--text);">평가 방식</b><br>
+              JD 기반으로 <b>포지션별 핵심 역량 5개 항목</b>을 추출하여 0~100점으로 평가합니다. 체크리스트식 조건 대조가 아닌, 전반적인 경력 방향성·보완 가능성·성장 잠재력을 종합 판단합니다.<br><br>
+              <b style="color:var(--text);">판정 기준</b><br>
+              ✅ <b>적합</b> — 포지션과 잘 맞고 실제 업무 수행 가능성이 높음<br>
+              🔶 <b>검토필요</b> — 가능성 있으나 면접을 통한 추가 확인 필요<br>
+              ❌ <b>부적합</b> — 경력 방향성 또는 핵심 역량이 포지션과 맞지 않음<br><br>
+              <b style="color:var(--text);">출력 내용</b><br>
+              종합 요약 · 역량 레이더 차트 · 강점/아쉬운점 · 맞춤형 면접 질문 3개
+            </div>
+          </div>
+        </div>
+        <button class="screen-btn" style="margin-top:16px;" onclick="switchScreenTab('input')">이력서 입력하러 가기 →</button>
+      </div>`;
+  } else if (currentScreenTab === 'input') {
+    document.getElementById('screeningContent').innerHTML = `
+      <div style="padding:28px 40px;">
+        <div class="page-header"><div class="page-title">${pos.name}</div><div class="page-subtitle">이력서 내용을 붙여넣고 스크리닝을 시작하세요</div></div>
+        <div class="section-card" style="margin-bottom:16px;">
+          <div class="section-card-header"><div class="section-card-title">후보자 정보</div></div>
+          <div class="section-card-body">
+            <div class="candidate-input">
+              <div class="input-label">후보자 이름 (선택)</div>
+              <input class="cand-name" id="candName" type="text" placeholder="홍길동 (이름 없이도 스크리닝 가능)" />
+              <div class="input-label" style="margin-top:8px;">이력서 내용 <span style="font-weight:400;color:var(--text-dim);">— 개인정보 제외, 경력/자격사항만</span></div>
+              <textarea class="resume-input" id="resumeInput" placeholder="경력사항, 주요 업무, 스킬, 자격증 등을 붙여넣어 주세요.&#10;이름, 연락처, 주소 등 개인정보는 제외해주세요."></textarea>
+            </div>
+          </div>
+        </div>
+        <button class="screen-btn" id="screenBtn" onclick="runScreening('${pos.id}')">
+          <div class="spin" id="spin"></div>
+          <span id="btnTxt">🔍 스크리닝 시작</span>
+        </button>
+        <div id="errArea"></div>
+      </div>`;
+  } else if (currentScreenTab === 'result') {
+    if (!lastResult) {
+      document.getElementById('screeningContent').innerHTML = `
+        <div style="padding:28px 40px;">
+          <div class="result-empty">
+            <div class="result-empty-icon">📭</div>
+            <div class="result-empty-text">아직 스크리닝 결과가 없습니다.<br>이력서 입력 탭에서 스크리닝을 먼저 진행해주세요.</div>
+          </div>
+        </div>`;
+    } else {
+      renderResultPage(lastResult);
+    }
+  }
+}
+
+// ──────────────────────────────────────────────
+// RUN SCREENING
+// ──────────────────────────────────────────────
+async function runScreening(posId) {
+  const pos = positions.find(p=>p.id===posId);
+  const resume = document.getElementById('resumeInput')?.value.trim();
+  const candName = document.getElementById('candName')?.value.trim() || '후보자';
+  if (!resume) { alert('이력서 내용을 입력해주세요.'); return; }
+
+  const btn = document.getElementById('screenBtn');
+  const spin = document.getElementById('spin');
+  const btnTxt = document.getElementById('btnTxt');
+  const errArea = document.getElementById('errArea');
+
+  btn.disabled = true; spin.style.display = 'block'; btnTxt.textContent = 'AI 분석 중...';
+  errArea.innerHTML = '';
+
+  const prompt = `당신은 코나아이의 경험 많은 채용 담당자입니다. 아래 JD와 이력서를 바탕으로 지원자를 종합적으로 평가해주세요.
+
+[포지션]
+${pos.name}
+
+[JD]
+${pos.jd}
+
+[지원자 이력서 (개인정보 제외)]
+${resume}
+
+[평가 방식]
+체크리스트식으로 조건을 하나씩 대조하지 마세요. 아래 관점으로 종합 판단하세요.
+- 전반적인 경력 방향성이 이 포지션과 맞는가
+- 필수 조건 중 일부가 부족하더라도, 다른 경험이나 역량이 보완 가능한가
+- 지원자의 성장 가능성과 잠재력은 어떠한가
+- 포지션에서 실제로 잘 해낼 수 있을 가능성이 있는가
+
+[역량 평가 항목]
+이 포지션의 JD에서 핵심 역량 5개를 직접 추출하여, 각 항목에 대해 0~100 사이의 점수를 부여하세요.
+항목명은 한국어로 5자 이내로 간결하게 작성하세요.
+
+[판정 기준]
+- 적합: 전반적으로 포지션에 잘 맞고, 실제 업무를 잘 수행할 가능성이 높음
+- 부적합: 경력 방향성이 맞지 않거나 핵심 역량이 현저히 부족함
+- 검토필요: 가능성은 있으나 면접을 통해 추가 확인이 필요한 경우
+
+아래 JSON 형식으로만 응답하세요. 다른 텍스트 없이 JSON만:
+
+{
+  "verdict": "적합" 또는 "부적합" 또는 "검토필요",
+  "summary": "2~3문장으로 종합 판정 요약. 전체적인 인상과 판단 근거 서술",
+  "scores": {
+    "역량항목1": 85,
+    "역량항목2": 70,
+    "역량항목3": 90,
+    "역량항목4": 65,
+    "역량항목5": 80
+  },
+  "pros": ["강점 1", "강점 2", "강점 3"],
+  "cons": ["아쉬운 점 1", "아쉬운 점 2"],
+  "recommendation": "면접 진행 여부에 대한 최종 의견",
+  "interviewQuestions": [
+    "이 후보자에게 꼭 확인해야 할 맞춤형 면접 질문 1",
+    "면접 질문 2",
+    "면접 질문 3"
+  ]
+}`;
+
+  try {
+    const res = await fetch('/.netlify/functions/generate', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:1500, messages:[{role:'user',content:prompt}]})
+    });
+    const data = await res.json();
+    const raw = data.content.map(i=>i.text||'').join('');
+    const clean = raw.replace(/```json|```/g,'').trim();
+    const result = JSON.parse(clean);
+    result.candidateName = candName;
+    result.positionName = pos.name;
+    result.positionId = pos.id;
+    lastResult = result;
+    // 자동 저장
+    const autoRecord = {
+      id: 'hist-'+Date.now(),
+      candidateName: candName,
+      positionId: pos.id,
+      positionName: pos.name,
+      verdict: result.verdict,
+      summary: result.summary,
+      pros: result.pros,
+      cons: result.cons,
+      recommendation: result.recommendation,
+      scores: result.scores,
+      interviewQuestions: result.interviewQuestions,
+      date: new Date().toISOString().split('T')[0]
+    };
+    const existingIdx = history.findIndex(h => h.candidateName===candName && h.positionId===pos.id);
+    if (existingIdx >= 0) history[existingIdx] = autoRecord;
+    else history.unshift(autoRecord);
+    saveHistory();
+    currentScreenTab = 'result';
+    ['jd','input','result'].forEach(t => document.getElementById('tab-'+t).classList.toggle('active', t==='result'));
+    renderResultPage(result);
+    showToast(verdictEmoji(result.verdict)+' '+candName+' — '+result.verdict+' 판정 완료 · 자동 저장됨');
+  } catch(e) {
+    errArea.innerHTML = `<div style="margin-top:16px;background:var(--red-bg);border:1px solid var(--red-border);border-radius:10px;padding:14px 18px;font-size:13px;color:var(--red);">오류가 발생했어요. 잠시 후 다시 시도해주세요.<br><small>${e.message}</small></div>`;
+  }
+  btn.disabled = false; spin.style.display = 'none'; btnTxt.textContent = '🔍 스크리닝 시작';
+}
+
+// ──────────────────────────────────────────────
+// RENDER RESULT
+// ──────────────────────────────────────────────
+function renderResultPage(r) {
+  const vc = verdictClass(r.verdict);
+  const prosHTML = (r.pros||[]).map(p=>`<div class="criteria-item"><div class="criteria-icon">✅</div><div class="criteria-text">${p}</div></div>`).join('');
+  const consHTML = (r.cons||[]).map(c=>`<div class="criteria-item"><div class="criteria-icon">🔸</div><div class="criteria-text">${c}</div></div>`).join('');
+  const iqHTML = (r.interviewQuestions||[]).map((q,i)=>`<div class="interview-q"><div class="interview-q-num">Q${i+1}</div><div class="interview-q-text">${q}</div></div>`).join('');
+  const radarSVG = buildRadarSVG(r.scores);
+
+  document.getElementById('screeningContent').innerHTML = `
+    <div style="padding:28px 40px;" class="fade-in">
+      <div class="section-card">
+        <div class="verdict-header">
+          <div class="verdict-badge ${vc}">${verdictEmoji(r.verdict)} ${r.verdict}</div>
+          <div>
+            <div class="verdict-candidate">${r.candidateName}</div>
+            <div class="verdict-pos">${r.positionName}</div>
+          </div>
+        </div>
+        <div class="result-body">
+          <div>
+            <div class="res-section-title">종합 요약</div>
+            <div class="summary-text">${r.summary}</div>
+          </div>
+          <div>
+            <div class="res-section-title">역량 평가 레이더 차트</div>
+            <div class="radar-wrap">${radarSVG}</div>
+          </div>
+          ${prosHTML ? `<div><div class="res-section-title">강점</div><div class="criteria-list">${prosHTML}</div></div>` : ''}
+          ${consHTML ? `<div><div class="res-section-title">아쉬운 점</div><div class="criteria-list">${consHTML}</div></div>` : ''}
+          <div>
+            <div class="res-section-title">면접 진행 의견</div>
+            <div class="summary-text">${r.recommendation}</div>
+          </div>
+          ${iqHTML ? `<div><div class="res-section-title">맞춤 면접 질문</div><div class="interview-q-list">${iqHTML}</div></div>` : ''}
+        </div>
+        <div class="result-actions">
+          <button class="action-btn" onclick="copyResult()">📋 Teams/메일 복사</button>
+          <button class="action-btn" onclick="switchTab('history')">📋 이력 관리 보기</button>
+          <button class="action-btn" onclick="switchScreenTab('input')">🔄 다음 후보자</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ──────────────────────────────────────────────
+// RADAR CHART
+// ──────────────────────────────────────────────
+function buildRadarSVG(scores) {
+  if (!scores) return '';
+  const keys = Object.keys(scores);
+  const vals = keys.map(k => scores[k]);
+  const n = keys.length;
+  const cx = 150, cy = 140, r = 100;
+  const colors = ['#4F7EFF','#7C5CFC','#16A34A','#D97706','#DC2626'];
+
+  function getPoint(i, val, maxR) {
+    const angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+    const dist = (val / 100) * maxR;
+    return [cx + dist * Math.cos(angle), cy + dist * Math.sin(angle)];
+  }
+
+  // Grid circles
+  let gridSVG = '';
+  [20,40,60,80,100].forEach(pct => {
+    const pts = Array.from({length:n},(_,i)=>getPoint(i,pct,r)).map(p=>p.join(',')).join(' ');
+    gridSVG += `<polygon points="${pts}" fill="none" stroke="#E2E6EF" stroke-width="1"/>`;
+  });
+
+  // Axis lines
+  let axesSVG = '';
+  for(let i=0;i<n;i++){
+    const [x,y]=getPoint(i,100,r);
+    axesSVG += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#E2E6EF" stroke-width="1"/>`;
+  }
+
+  // Data polygon
+  const dataPts = vals.map((v,i)=>getPoint(i,v,r)).map(p=>p.join(',')).join(' ');
+  const dataPolygon = `<polygon points="${dataPts}" fill="rgba(79,126,255,0.2)" stroke="#4F7EFF" stroke-width="2"/>`;
+
+  // Data dots
+  const dataDots = vals.map((v,i)=>{
+    const [x,y]=getPoint(i,v,r);
+    return `<circle cx="${x}" cy="${y}" r="4" fill="#4F7EFF" stroke="#fff" stroke-width="1.5"/>`;
+  }).join('');
+
+  // Labels
+  const labelsSVG = keys.map((k,i)=>{
+    const [x,y]=getPoint(i,118,r);
+    return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#5A6080" font-family="Pretendard,sans-serif">${k}</text>`;
+  }).join('');
+
+  // Score labels
+  const scoreLabelsSVG = vals.map((v,i)=>{
+    const [x,y]=getPoint(i,v,r);
+    return `<text x="${x+6}" y="${y-6}" font-size="9" fill="#4F7EFF" font-weight="700" font-family="Pretendard,sans-serif">${v}</text>`;
+  }).join('');
+
+  return `<svg class="radar-svg" viewBox="0 0 300 290" xmlns="http://www.w3.org/2000/svg">
+    ${gridSVG}${axesSVG}${dataPolygon}${dataDots}${scoreLabelsSVG}${labelsSVG}
+  </svg>`;
+}
+
+// ──────────────────────────────────────────────
+// SAVE / COPY
+// ──────────────────────────────────────────────
+function saveResult() {
+  if (!lastResult) return;
+  const existing = history.findIndex(h => h.candidateName===lastResult.candidateName && h.positionId===lastResult.positionId);
+  const record = {
+    id: 'hist-'+Date.now(),
+    candidateName: lastResult.candidateName,
+    positionId: lastResult.positionId,
+    positionName: lastResult.positionName,
+    verdict: lastResult.verdict,
+    summary: lastResult.summary,
+    pros: lastResult.pros,
+    cons: lastResult.cons,
+    recommendation: lastResult.recommendation,
+    scores: lastResult.scores,
+    interviewQuestions: lastResult.interviewQuestions,
+    date: new Date().toISOString().split('T')[0]
+  };
+  if (existing >= 0) history[existing] = record;
+  else history.unshift(record);
+  saveHistory();
+  showToast('✅ 이력이 저장되었습니다');
+}
+
+function copyResult() {
+  if (!lastResult) return;
+  const r = lastResult;
+  const scoreText = r.scores ? Object.entries(r.scores).map(([k,v])=>`  ${k}: ${v}점`).join('\n') : '';
+  const text = `[KONA HR LENS 스크리닝 결과]
+후보자: ${r.candidateName} | 포지션: ${r.positionName} | 판정: ${r.verdict}
+날짜: ${new Date().toLocaleDateString('ko-KR')}
+
+▪ 종합 요약
+${r.summary}
+
+▪ 역량 점수
+${scoreText}
+
+▪ 강점
+${(r.pros||[]).map(p=>'· '+p).join('\n')}
+
+▪ 아쉬운 점
+${(r.cons||[]).map(c=>'· '+c).join('\n')}
+
+▪ 면접 진행 의견
+${r.recommendation}
+
+▪ 맞춤 면접 질문
+${(r.interviewQuestions||[]).map((q,i)=>`Q${i+1}. ${q}`).join('\n')}`;
+  navigator.clipboard.writeText(text).then(()=>showToast('📋 결과가 클립보드에 복사되었습니다'));
+}
+
+// ──────────────────────────────────────────────
+// HISTORY
+// ──────────────────────────────────────────────
+function filterHistory(filter, btn) {
+  historyFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderHistory();
+}
+
+function renderHistory() {
+  const search = document.getElementById('historySearch')?.value.toLowerCase() || '';
+  let filtered = history.filter(h => {
+    const matchFilter = historyFilter==='all' || h.verdict===historyFilter;
+    const matchSearch = !search || h.candidateName.toLowerCase().includes(search) || h.positionName.toLowerCase().includes(search);
+    return matchFilter && matchSearch;
+  });
+
+  if (!filtered.length) {
+    document.getElementById('historyContent').innerHTML = `<div class="history-table"><div class="history-empty"><div style="font-size:32px;margin-bottom:12px;opacity:.4;">📭</div><div style="font-size:13px;">조건에 맞는 이력이 없습니다</div></div></div>`;
+    return;
+  }
+
+  document.getElementById('historyContent').innerHTML = `
+    <div class="history-table">
+      <div class="history-thead">
+        <div class="history-th">후보자</div>
+        <div class="history-th">포지션</div>
+        <div class="history-th">판정</div>
+        <div class="history-th">날짜</div>
+        <div class="history-th"></div>
+      </div>
+      <div class="history-tbody">
+        ${filtered.map(h=>`
+          <div class="history-row" onclick="showHistoryDetail('${h.id}')">
+            <div><div class="history-name">${h.candidateName}</div></div>
+            <div><div class="history-pos">${h.positionName}</div></div>
+            <div><span class="history-verdict-badge ${verdictClass(h.verdict)}">${verdictEmoji(h.verdict)} ${h.verdict}</span></div>
+            <div class="history-date">${h.date}</div>
+            <div><button class="history-del" onclick="event.stopPropagation();deleteHistory('${h.id}')">삭제</button></div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function showHistoryDetail(id) {
+  const h = history.find(x=>x.id===id);
+  if (!h) return;
+  const radarSVG = buildRadarSVG(h.scores);
+  const scoreText = h.scores ? Object.entries(h.scores).map(([k,v])=>`<span style="display:inline-block;background:var(--surface2);border-radius:6px;padding:3px 10px;font-size:12px;margin:3px;"><b>${k}</b> ${v}점</span>`).join('') : '';
+  document.getElementById('detailTitle').innerHTML = `${h.candidateName} <span style="font-size:13px;font-weight:400;color:var(--text-dim);">· ${h.positionName}</span> <span class="verdict-badge ${verdictClass(h.verdict)}" style="font-size:12px;padding:4px 12px;margin-left:8px;">${verdictEmoji(h.verdict)} ${h.verdict}</span>`;
+  document.getElementById('detailBody').innerHTML = `
+    <div style="margin-bottom:14px;"><b style="font-size:11px;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase;">종합 요약</b><p style="margin-top:6px;">${h.summary}</p></div>
+    ${radarSVG ? `<div style="margin-bottom:14px;"><b style="font-size:11px;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase;">역량 레이더</b><div style="display:flex;justify-content:center;margin-top:8px;">${radarSVG}</div></div>` : ''}
+    ${scoreText ? `<div style="margin-bottom:14px;"><b style="font-size:11px;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase;">역량 점수</b><div style="margin-top:6px;">${scoreText}</div></div>` : ''}
+    <div style="margin-bottom:14px;"><b style="font-size:11px;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase;">강점</b>${(h.pros||[]).map(p=>`<div style="margin-top:6px;padding:8px 12px;background:var(--surface2);border-radius:8px;font-size:13px;">✅ ${p}</div>`).join('')}</div>
+    <div style="margin-bottom:14px;"><b style="font-size:11px;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase;">아쉬운 점</b>${(h.cons||[]).map(c=>`<div style="margin-top:6px;padding:8px 12px;background:var(--surface2);border-radius:8px;font-size:13px;">🔸 ${c}</div>`).join('')}</div>
+    <div style="margin-bottom:14px;"><b style="font-size:11px;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase;">면접 진행 의견</b><p style="margin-top:6px;">${h.recommendation}</p></div>
+    ${h.interviewQuestions?.length ? `<div><b style="font-size:11px;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase;">맞춤 면접 질문</b>${h.interviewQuestions.map((q,i)=>`<div style="margin-top:6px;padding:10px 14px;background:var(--surface2);border-radius:8px;border-left:3px solid var(--accent);font-size:13px;"><b>Q${i+1}</b> ${q}</div>`).join('')}</div>` : ''}
+  `;
+  document.getElementById('detailModal').classList.add('show');
+}
+
+function closeDetailModal() { document.getElementById('detailModal').classList.remove('show'); }
+
+function deleteHistory(id) {
+  if (!confirm('이 이력을 삭제할까요?')) return;
+  history = history.filter(h=>h.id!==id);
+  saveHistory();
+  renderHistory();
+  renderDashboard();
+  showToast('🗑 이력이 삭제되었습니다');
+}
+
+// ──────────────────────────────────────────────
+// POSITION CRUD
+// ──────────────────────────────────────────────
+function openAddModal() {
+  editingPosId = null;
+  document.getElementById('modalTitle').textContent = '포지션 추가';
+  document.getElementById('newPosName').value = '';
+  document.getElementById('newPosJD').value = '';
+  document.getElementById('addModal').classList.add('show');
+}
+
+function openEditModal(id) {
+  const pos = positions.find(p=>p.id===id);
+  if (!pos) return;
+  editingPosId = id;
+  document.getElementById('modalTitle').textContent = '포지션 편집';
+  document.getElementById('newPosName').value = pos.name;
+  document.getElementById('newPosJD').value = pos.jd;
+  document.getElementById('addModal').classList.add('show');
+}
+
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('show');
+  editingPosId = null;
+}
+
+function savePosition() {
+  const name = document.getElementById('newPosName').value.trim();
+  const jd = document.getElementById('newPosJD').value.trim();
+  if (!name || !jd) { alert('포지션명과 JD를 모두 입력해주세요.'); return; }
+  if (editingPosId) {
+    const idx = positions.findIndex(p=>p.id===editingPosId);
+    if (idx>=0) { positions[idx].name=name; positions[idx].jd=jd; }
+  } else {
+    positions.push({id:'pos-'+Date.now(), name, jd});
+  }
+  savePositions();
+  renderSidebar();
+  closeAddModal();
+  showToast(editingPosId ? '✅ 포지션이 수정되었습니다' : '✅ 포지션이 추가되었습니다');
+}
+
+function deletePosition(id) {
+  if (!confirm('이 포지션을 삭제할까요?')) return;
+  positions = positions.filter(p=>p.id!==id);
+  if (selectedPosId===id) { selectedPosId=null; }
+  savePositions();
+  renderSidebar();
+  showToast('🗑 포지션이 삭제되었습니다');
+}
+
+// ──────────────────────────────────────────────
+// UTILITIES
+// ──────────────────────────────────────────────
+function verdictClass(v) { return v==='적합'?'pass':v==='부적합'?'fail':'review'; }
+function verdictEmoji(v) { return v==='적합'?'✅':v==='부적합'?'❌':'🔶'; }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
 init();
 </script>
 </body>
